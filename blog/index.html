@@ -12,7 +12,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="Description" content="Weblog of just.js Javascript framework" />
-<link href="/Roboto.css" rel="stylesheet">
+<link rel="preload" as="style" href="/Roboto.css" rel="stylesheet">
 <link rel="authorization_endpoint" href="https://indieauth.com/auth">
 <link rel="token_endpoint" href="https://tokens.indieauth.com/token">
 <link rel="micropub" href="https://api.billywhizz.io/micropub">
@@ -32,9 +32,11 @@
 </head>
 <body>
 <div class="container">
-<a href="/">
+<div class="logo">
+<a class="home" href="/">
 <pre id="logo" class="logo"></pre>
 </a>
+</div>
 <div>
 <h1>On Javascript Performance</h1>
 <h2><a class="headline" href="on-javascript-performance-1.html">Part 1 - Techempower Rankings</a></h2>

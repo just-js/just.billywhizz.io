@@ -17,9 +17,23 @@ div.container {
   width: 0px;
   background: transparent; /* make scrollbar transparent */
 }
+div.logo {
+  float: right;
+  margin: 8px;
+}
 pre.logo {
   font-size: 8px;
-  float: right;
+}
+a.quote {
+  font-style: italic;
+  quotes: """ """;
+  text-decoration: none;
+}
+a.quote::before {
+  content: open-quote;
+}
+a.quote::after {
+  content: close-quote;
 }
 .main {
   padding: 32px;
@@ -33,6 +47,7 @@ pre.main {
 }
 h1 {
   color: #606060;
+  margin-block-start: 0px;
 }
 h2 {
   color: #808080;
@@ -51,6 +66,7 @@ a:hover {
 }
 @media print {
   div.utterances { display: none; }
+  div.logo { display: none; }
 }
 ul {
   list-style-type: none;
@@ -59,4 +75,10 @@ ul {
 }
 li {
   font-size: 24pt;
+}
+a.home {
+  text-decoration: none;
+}
+a.home:hover {
+  text-decoration: none;
 }
