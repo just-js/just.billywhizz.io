@@ -1,0 +1,62 @@
+body {
+  overflow: scroll;
+  height: 100%;
+  padding: 0px;
+  background-color: #f0f0f0;
+  margin: 0;
+  font-family: "Roboto Slab", Georgia, "Times New Roman", serif;
+}
+div.container {
+  padding: 32px;
+  background-color: white;
+  max-width: 800px;
+  margin-right: auto;
+  margin-left: auto;
+}
+::-webkit-scrollbar {
+  width: 0px;
+  background: transparent; /* make scrollbar transparent */
+}
+pre.logo {
+  font-size: 8px;
+  float: right;
+}
+.main {
+  padding: 32px;
+  max-width: 800px;
+  text-align: center;
+  margin-right: auto;
+  margin-left: auto;
+}
+pre.main {
+  font-size: 8px;
+}
+h1 {
+  color: #606060;
+}
+h2 {
+  color: #808080;
+}
+h3 {
+  color: #808080;
+}
+p {
+  font-size: 14pt;
+}
+a {
+  color: #606060;
+}
+a:hover {
+  color: #F6A159;
+}
+@media print {
+  div.utterances { display: none; }
+}
+ul {
+  list-style-type: none;
+  padding: 0px;
+  margin: 0px;
+}
+li {
+  font-size: 24pt;
+}
