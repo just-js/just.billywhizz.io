@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>just.js: On Javascript Performance</title>
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-1371855-5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-1371855-5');
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="description" content="A review of Javascript performance. Part 1 - Techempower Rankings." />
+<meta name="apple-mobile-web-app-title" content="just.js" />
+<meta name="application-name" content="just.js" />
+<meta name="msapplication-TileColor" content="#da532c" />
+<meta name="theme-color" content="#ffffff" />
+<meta charset="UTF-8" />
+<meta name="keywords" content="JavaScript,Techempower,Benchmark,Performance" />
+<meta name="author" content="Andrew Johnston" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:description" content="On Javascript Performance - 1. Establishing a Baseline" />
+<meta name="twitter:title" content="1. Establishing a Baseline" />
+<meta name="twitter:site" content="@justjs14" />
+<meta name="twitter:image" content="tfbvis-query.png" />
+<meta name="twitter:creator" content="@billywhizz1970" />
+<meta name="twitter:image:alt" content="graph of multiple query performance for a range of frameworks on techempower" />
+<link rel="preload" as="style" href="/Roboto.css" rel="stylesheet" />
+<link rel="authorization_endpoint" href="https://indieauth.com/auth">
+<link rel="token_endpoint" href="https://tokens.indieauth.com/token">
+<link rel="micropub" href="https://api.billywhizz.io/micropub">
+<link rel="openid.delegate" href="https://billywhizz.io/" />
+<link rel="openid.server" href="https://openid.indieauth.com/openid" />
+<link href="/index.css" rel="stylesheet" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<link rel="alternate" type="application/rss+xml" title="RSS Feed for just.js javascript framework" href="/blog/index.xml" />
+</head>
+<body>
+<div class="container">
+<div class="header">
+<img src="first.png" />
+<hgroup>
+<h3 class="ts">13 October 2020</h3>
+<h1 class="series">On Javascript Performance</h1>
+<h2 class="hl">1. Establishing a Baseline</h2>
+<h3 class="by">by <a class="author" target="_blank" rel="noopener" href="https://billywhizz.io">billywhizz</a></h3>
+</hgroup>
+</div>
+<div class="article">
+<p class="first">
+  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec efficitur nunc in tellus egestas venenatis. Nam at lobortis augue. Integer sit amet nibh molestie, maximus mi at, finibus nisl. In maximus bibendum ante sit amet fringilla. Aenean mi augue, porttitor vel nibh et, venenatis gravida leo. Sed et tincidunt purus. Pellentesque laoreet cursus tellus sed convallis. Ut et dictum lacus, nec porta risus.
+</p>
+<h3>1.1 Caveat Emptor</h3>
+<p>
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec efficitur nunc in tellus egestas venenatis. Nam at lobortis augue. Integer sit amet nibh molestie, maximus mi at, finibus nisl. In maximus bibendum ante sit amet fringilla. Aenean mi augue, porttitor vel nibh et, venenatis gravida leo. Sed et tincidunt purus. Pellentesque laoreet cursus tellus sed convallis. Ut et dictum lacus, nec porta risus.
+</p>
+<a target="_blank" rel="noopener" href="https://www.techempower.com/benchmarks/#section=test&runid=9716e3cd-9e53-433c-b6c5-d2c48c9593c1&hw=ph&test=composite&a=2">
+  <img alt="techempower results for all frameworks" class="inline" src="techempower-composite.png" />
+</a>
+<br />
+<p class="subimage">
+techempower results for all frameworks
+</p>
+<p>
+Praesent sed orci in arcu congue faucibus. Suspendisse maximus nunc nisl, in semper nisi vulputate sit amet. Nam vitae faucibus sem. Etiam suscipit neque rutrum mi scelerisque, eget auctor est tempus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Praesent at purus a lacus dapibus vehicula. Maecenas scelerisque leo bibendum massa feugiat varius.
+</p>
+<p>
+Duis metus tortor, malesuada et pellentesque nec, tincidunt id quam. Cras ultrices velit augue, non vestibulum leo auctor dignissim. Suspendisse dictum quam vel metus tincidunt, eget consectetur dolor rhoncus. Aenean et mollis diam. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum egestas tortor est, non sollicitudin ante bibendum sit amet. Quisque at consequat tellus. Ut faucibus, tortor eu tincidunt lobortis, velit turpis faucibus mi, nec venenatis justo enim ac elit.
+</p>
+<h3>1.2 The End at the Beginning</h3>
+<p>
+Nullam enim magna, egestas quis orci eu, elementum accumsan mauris. Nam purus mauris, ornare ac tempor at, blandit et orci. Suspendisse erat elit, facilisis eget odio non, tincidunt viverra leo. Vivamus sed mauris tellus. Sed vitae malesuada neque, eu sodales lacus. Praesent tempus pharetra vestibulum. Cras venenatis vitae magna sed scelerisque. Ut ac aliquam sem.
+</p>
+<a target="_blank" rel="noopener" href="https://www.techempower.com/benchmarks/#section=test&runid=9716e3cd-9e53-433c-b6c5-d2c48c9593c1&hw=ph&test=composite&l=2du9fp-2&a=2">
+  <img alt="techempower results for 'high level' language frameworks" class="inline" src="techempower-highlevel.png" />
+</a>
+<br />
+<p class="subimage">
+techempower results for "high level" language frameworks
+</p>
+<p>
+Nam consequat tempor diam a finibus. Suspendisse a sodales nibh, non porttitor odio. Ut eu libero vel massa pharetra suscipit ac nec odio. Maecenas sed cursus quam. Morbi id sodales ante, id ultricies eros. Vestibulum luctus felis at augue euismod sodales. Nam iaculis sapien dui, ut pulvinar tortor commodo quis. Integer ut dui blandit purus mollis pellentesque sit amet quis urna. Pellentesque iaculis, eros nec ornare rutrum, ligula erat commodo velit, eget faucibus erat massa at nunc. Etiam lacinia venenatis massa ac lobortis. Praesent metus tellus, ultricies sed risus eget, aliquam vulputate augue. Nullam elementum convallis odio et placerat. Morbi porta porta ante non porta. Integer dictum ut nulla a egestas.
+</p>
+<h3>1.3 The End at the Beginning</h3>
+<p>
+Fusce sit amet convallis ligula, sit amet condimentum dolor. Vestibulum rhoncus semper sodales. Sed condimentum suscipit urna, at rhoncus neque ultrices ac. Nulla facilisi. Quisque sollicitudin tellus vitae lorem pretium varius. Ut molestie maximus vestibulum. Integer eleifend enim at scelerisque elementum. Fusce lobortis commodo diam, nec congue tortor congue nec. Cras sodales est sed orci condimentum eleifend. Duis euismod nunc libero, ut viverra enim aliquet sed.
+</p>
+<p>
+Phasellus cursus orci metus, eu feugiat augue rutrum a. Pellentesque efficitur neque et diam lacinia, nec imperdiet leo lacinia. Donec auctor nisi at bibendum dapibus. In hac habitasse platea dictumst. Sed quam nisl, volutpat eget diam a, tempus dapibus leo. Curabitur at mi laoreet, pellentesque mauris id, finibus tortor. In non tincidunt mauris, quis laoreet magna. Nullam varius elit at mollis aliquet. Nunc facilisis, diam et pharetra imperdiet, lorem tortor dictum dui, id commodo magna sapien feugiat diam. Phasellus blandit justo nec tellus luctus egestas in quis sem. Phasellus pharetra in dolor ac gravida.
+</p>
+<a target="_blank" rel="noopener" href="https://www.techempower.com/benchmarks/#section=test&runid=9716e3cd-9e53-433c-b6c5-d2c48c9593c1&hw=ph&test=composite&l=hr8lxb-1r&a=2">
+  <img alt="techempower results for javascript frameworks" class="inline" src="techempower-javascript.png" />
+</a>
+<br />
+<p class="subimage">
+techempower results for javascript frameworks
+</p>
+<p>
+Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Integer posuere risus arcu, interdum aliquet magna fringilla id. Aliquam erat volutpat. Nullam venenatis efficitur nibh vitae viverra. Aliquam a orci luctus, rutrum enim vel, semper arcu. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Maecenas tincidunt, mauris nec ullamcorper iaculis, magna ipsum pharetra turpis, sed ornare nunc est eget ipsum. Morbi pharetra est id ligula convallis fringilla. Ut at tellus aliquam urna posuere ornare nec id est. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Etiam libero est, vulputate at eros ac, ornare posuere libero. Cras ut diam in purus porttitor tempus non sit amet velit. Nulla facilisi.
+</p>
+<p>
+Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aenean eget tempus libero. Praesent mollis ac nulla eu dapibus. Nunc luctus nulla arcu, sit amet suscipit lacus malesuada at. Nulla consectetur lorem ut augue iaculis, eu efficitur nulla vestibulum. Duis aliquam turpis leo, et dictum metus iaculis id. Donec dapibus, orci non pellentesque ultrices, risus eros congue sem, sed faucibus diam urna vitae nunc. Nunc eu consectetur dolor.
+</p>
+<h3>1.4 The End at the Beginning</h3>
+<a target="_blank" rel="noopener" href="https://www.techempower.com/benchmarks/#section=test&runid=9716e3cd-9e53-433c-b6c5-d2c48c9593c1&hw=ph&test=composite&a=2">
+  <img alt="techempower results for all frameworks" class="inline" src="tfbvis-query.png" />
+</a>
+<br />
+<p class="subimage">
+techempower results for all frameworks
+</p>
+<p>
+Sed luctus est ex, vitae interdum mauris sollicitudin eget. Nam quam enim, cursus quis imperdiet vitae, bibendum at eros. Suspendisse ut consequat augue. Morbi egestas, velit ac faucibus placerat, elit est vehicula quam, at volutpat urna metus eu purus. Integer vitae convallis lorem. Nullam congue scelerisque quam, sed semper ligula congue non. Nunc luctus lorem eget lacus faucibus dapibus. Vestibulum in libero laoreet, aliquet augue vel, pulvinar sem. Etiam pretium sagittis justo, ut imperdiet erat aliquet ac.
+</p>
+<h3>1.5 The End at the Beginning</h3>
+<p>
+Praesent vestibulum erat ut dolor varius, nec porta nisl mattis. In sit amet pulvinar augue. Quisque molestie eget urna at eleifend. Vestibulum at convallis risus. Vestibulum gravida dapibus orci, nec volutpat lectus commodo eget. Donec hendrerit lacus in ipsum maximus, non vehicula leo pulvinar. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Vivamus arcu felis, semper eu lorem lacinia, volutpat fermentum felis. Sed aliquet nisl quis arcu vestibulum sagittis. Cras tempus massa sed elementum lobortis. Quisque blandit mi est, sed tincidunt lectus faucibus ac. Quisque a justo sapien. Phasellus consectetur mauris id faucibus luctus.
+</p>
+<p>
+Suspendisse gravida vestibulum tincidunt. In et vulputate nulla. Proin feugiat, arcu eu pretium sodales, tortor est vehicula arcu, a volutpat elit leo in dolor. Nam faucibus tempor massa, luctus malesuada erat tincidunt id. Cras iaculis ante ipsum, in pulvinar nisi semper eu. Vestibulum elementum vestibulum nunc, et ornare ipsum commodo id. Sed suscipit ultrices urna, posuere aliquet odio pharetra eget. Pellentesque pretium hendrerit lectus, at rhoncus nulla cursus non.
+</p>
+<a target="_blank" rel="noopener" href="https://www.techempower.com/benchmarks/#section=test&runid=9716e3cd-9e53-433c-b6c5-d2c48c9593c1&hw=ph&test=composite&a=2">
+  <img alt="techempower results for all frameworks" class="inline" src="despair.png" />
+</a>
+<br />
+<p class="subimage">
+techempower results for all frameworks
+</p>
+<p>
+Ut efficitur neque erat, a elementum odio ullamcorper ac. Quisque dui odio, egestas et commodo ac, ultrices ut tortor. Praesent quis turpis sed eros elementum pellentesque porta sed erat. Mauris ac tincidunt est. In quam lorem, eleifend porttitor nisl a, cursus elementum tellus. Vivamus justo felis, sagittis quis mi id, lacinia porta est. Praesent congue porta semper. Cras posuere elit sit amet vestibulum hendrerit. Donec a lacus sit amet nibh vulputate cursus. Sed non accumsan libero. Cras at tortor nibh. Sed malesuada mattis hendrerit. Aenean hendrerit, odio in lobortis tincidunt, diam magna iaculis urna, sed iaculis magna sapien non dui. Morbi efficitur facilisis eros, eu accumsan mauris semper quis. Morbi convallis erat scelerisque sem fringilla, sed lobortis risus commodo. Suspendisse non libero eu risus rutrum interdum.
+</p>
+<p>
+Cras lectus ipsum, vulputate et risus id, feugiat auctor mauris. Nunc a volutpat lacus. Curabitur viverra sed leo vitae vestibulum. Quisque lacus odio, imperdiet non semper mollis, molestie ac ligula. Curabitur mollis velit in mi placerat ultrices. Nunc iaculis semper mollis. Praesent dignissim est erat. Integer accumsan vel ipsum id mollis. Donec ultricies odio justo, at consectetur ante interdum ut. Vivamus efficitur ac nulla at dapibus. Fusce scelerisque elit nisi, ut volutpat erat semper nec.
+</p>
+<p>
+Vivamus volutpat sed enim malesuada lacinia. Donec in efficitur augue. Fusce vitae sapien ac magna maximus tincidunt. Donec dignissim ornare justo, vitae semper dolor euismod placerat. Donec at lorem vel ante pellentesque tincidunt. Nunc rutrum magna vitae tempus vestibulum. In accumsan egestas feugiat. Cras ultricies rutrum lorem, eget rhoncus metus ullamcorper quis. In hac habitasse platea dictumst. Vestibulum eleifend placerat mi, sed pharetra risus. Aliquam fringilla tellus a mi ullamcorper, eu ultrices quam tincidunt. Nulla eu augue diam.
+</p>
+<h3>1.6 The End at the Beginning</h3>
+<a target="_blank" rel="noopener" href="https://www.techempower.com/benchmarks/#section=test&runid=9716e3cd-9e53-433c-b6c5-d2c48c9593c1&hw=ph&test=composite&a=2">
+  <img alt="techempower results for all frameworks" class="inline" src="despair.png" />
+</a>
+<br />
+<p class="subimage">
+techempower results for all frameworks
+</p>
+<p>
+Phasellus condimentum risus sit amet odio vulputate suscipit. Integer tempus dui eu nisl lobortis ullamcorper in vehicula neque. Phasellus eu mauris risus. Duis viverra venenatis porta. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Duis fermentum posuere rutrum. Aliquam pretium auctor odio vitae feugiat. Sed quis lacinia risus.
+</p>
+<p>
+Nam suscipit risus nunc, ut malesuada lectus lobortis eu. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nam bibendum finibus augue, at molestie justo. Cras dignissim mi id felis eleifend dictum. Mauris eget dolor ac est efficitur suscipit. Quisque risus elit, euismod ut elit non, viverra pulvinar nisl. Donec suscipit accumsan enim id sollicitudin. Nullam dolor lorem, consequat vitae risus eu, bibendum pellentesque felis. Nunc scelerisque, ipsum at blandit vehicula, purus justo commodo libero, quis pharetra elit nunc non felis. Sed a vehicula augue. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Curabitur eget metus bibendum, egestas augue id, consectetur est. Sed eu est consequat, vehicula magna vel, congue dui. Aliquam in nulla a dui rhoncus vulputate vitae a tortor.
+</p>
+<p>
+Duis nulla ipsum, dapibus nec varius tristique, interdum fringilla libero. Donec et nulla ut ipsum volutpat hendrerit sit amet nec ante. Suspendisse potenti. Fusce ultrices magna at leo efficitur cursus. Ut vel diam id ex blandit lacinia et sed tellus. Sed lacinia eget mi id lacinia. Praesent porta metus eget odio congue rhoncus. Maecenas lobortis ex at placerat maximus. Quisque ac risus enim. Sed est massa, cursus ut eleifend sed, dictum ac neque. Praesent a lacinia lectus.
+</p>
+<h3>1.7 The End at the Beginning</h3>
+<a target="_blank" rel="noopener" href="https://www.techempower.com/benchmarks/#section=test&runid=9716e3cd-9e53-433c-b6c5-d2c48c9593c1&hw=ph&test=composite&a=2">
+  <img alt="techempower results for all frameworks" class="inline" src="despair.png" />
+</a>
+<br />
+<p class="subimage">
+techempower results for all frameworks
+</p>
+<p>
+In consequat, lorem ac auctor accumsan, ligula lectus faucibus ligula, sit amet vulputate eros lectus interdum sem. Nunc nulla ante, porttitor ut justo eu, auctor pretium ligula. Suspendisse a dolor id elit facilisis semper sollicitudin sit amet arcu. In condimentum, urna vitae laoreet aliquet, libero felis venenatis orci, eget venenatis nulla ex eget lectus. Cras facilisis sapien id semper tincidunt. Ut aliquet sit amet erat vitae volutpat. Praesent at scelerisque enim, id fermentum sem. Duis viverra vehicula scelerisque. Nunc quis hendrerit lacus, dignissim placerat dui. Suspendisse nec risus ut ex luctus imperdiet. Fusce tristique pharetra orci vitae mollis. Ut quam nunc, semper sit amet ultrices vel, cursus ac nibh. Proin semper nisl posuere libero posuere fringilla. Mauris sapien metus, scelerisque a augue non, accumsan luctus nibh. In pharetra laoreet porttitor. Duis feugiat dolor at velit finibus pulvinar.
+</p>
+<p>
+Duis id luctus augue. Donec mi urna, pharetra nec vehicula vel, laoreet nec justo. Sed eu lectus venenatis, interdum erat in, pellentesque massa. Vestibulum consectetur id nulla a scelerisque. Quisque molestie vitae odio eu egestas. Phasellus suscipit tincidunt turpis, sed volutpat diam molestie nec. Ut sapien odio, placerat a consectetur et, pretium non velit. Sed quis lacus augue. Nulla eget lacus arcu.
+</p>
+</div>
+<p class="social">
+  <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="On Javascript Performance, 1. Establishing a Baseline" data-url="https://just.billywhizz.io/blog/on-javascript-performance-1" data-via="justjs14" data-hashtags="javascript" data-show-count="true"></a>
+  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+</p>
+<div class="comment">
+<script src="https://utteranc.es/client.js" repo="just-js/just.billywhizz.io" issue-term="pathname" label="blog.comment" theme="github-light" crossorigin="anonymous" async></script>  
+</div>
+</div>
+</body>
+</html>

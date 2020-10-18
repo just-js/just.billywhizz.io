@@ -7,7 +7,8 @@ body {
   font-family: "Roboto Slab", Georgia, "Times New Roman", serif;
 }
 div.container {
-  padding: 32px;
+  padding-left: 32px;
+  padding-right: 32px;
   background-color: white;
   max-width: 800px;
   margin-right: auto;
@@ -17,17 +18,24 @@ div.container {
   width: 0px;
   background: transparent; /* make scrollbar transparent */
 }
+p.first::first-letter {
+  font-size: 3.2rem;
+  line-height: .7;
+  float: left;
+  padding-right: 8px;
+  padding-top: 4px;
+}
 div.logo {
   float: right;
-  margin: 8px;
+  margin: 0;
+  margin-left: 16px;
+  margin-bottom: 16px;
 }
 pre.logo {
-  font-size: 8px;
+  font-size: 4px;
 }
 a.quote {
-  font-style: italic;
   quotes: """ """;
-  text-decoration: none;
 }
 a.quote::before {
   content: open-quote;
@@ -45,15 +53,68 @@ a.quote::after {
 pre.main {
   font-size: 8px;
 }
+p.subimage {
+  font-size: 10pt;
+  text-align: center;
+}
+p.social {
+  padding-top: 8px;
+  text-align: right;
+}
+div.utterances {
+  margin-right: 0px;
+}
+div.header {
+  margin-left: -36px;
+  margin-right: -36px;
+  background-color: #e0e0e0;
+  padding-top: 32px;
+  padding-left: 32px;
+  padding-right: 32px;
+  padding-bottom: 16px;
+  border-bottom: 16px solid #c0c0c0;
+}
+div.article {
+  clear: both;
+  padding-top: 16px;
+}
 h1 {
   color: #606060;
   margin-block-start: 0px;
 }
+h1.series {
+  margin: 0;
+  padding: 0;
+  margin-top: 16px;
+  line-height: 1em;
+}
 h2 {
   color: #808080;
 }
+div.header img {
+  float: right;
+  height: 140px;
+  width: 160px;
+}
+h2.hl {
+  margin: 0;
+  padding: 0;
+  margin-top: 8px;
+  line-height: 1em;
+}
 h3 {
   color: #808080;
+}
+h3.ts {
+  margin: 0;
+  padding: 0;
+  font-size: 12pt;
+}
+h3.by {
+  margin: 0;
+  padding: 0;
+  font-size: 12pt;
+  margin-top: 16px;
 }
 p {
   font-size: 14pt;
@@ -64,9 +125,28 @@ a {
 a:hover {
   color: #F6A159;
 }
+img.inline {
+  max-width: 80%;
+  display: block;
+  margin: 0 auto;
+}
 @media print {
   div.utterances { display: none; }
   div.logo { display: none; }
+  p.social { display: none; }
+  div.header img { display: none; }
+}
+@media only screen and (max-width: 600px) {
+  div.header img {
+    float: right;
+    height: 120px;
+  }
+}
+@media only screen and (max-width: 400px) {
+  div.header img {
+    float: right;
+    height: 80px;
+  }
 }
 ul {
   list-style-type: none;
