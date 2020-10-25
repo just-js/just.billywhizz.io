@@ -1,3 +1,11 @@
+@font-face {
+  font-family: 'Roboto Slab';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/robotoslab/v12/BngbUXZYTXPIvIBgJJSb6s3BzlRRfKOFbvjojISmb2RjV9Ku1Q.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
 body {
   overflow: scroll;
   height: 100%;
@@ -32,7 +40,12 @@ div.logo {
   margin-bottom: 16px;
 }
 pre.logo {
-  font-size: 4px;
+  font-size: 8px;
+}
+svg.rss {
+  enable-background: new 0 0 32 32;
+  width: 32px;
+  height: 32px;
 }
 a.quote {
   quotes: """ """;
@@ -49,9 +62,6 @@ a.quote::after {
   text-align: center;
   margin-right: auto;
   margin-left: auto;
-}
-pre.main {
-  font-size: 8px;
 }
 p.subimage {
   font-size: 10pt;
@@ -79,7 +89,7 @@ div.article {
   padding-top: 16px;
 }
 h1 {
-  color: #606060;
+  color: #404040;
   margin-block-start: 0px;
 }
 h1.series {
@@ -89,12 +99,12 @@ h1.series {
   line-height: 1em;
 }
 h2 {
-  color: #808080;
+  color: #606060;
+  font-size: 20pt;
 }
 div.header img {
   float: right;
   height: 140px;
-  width: 160px;
 }
 h2.hl {
   margin: 0;
@@ -103,7 +113,8 @@ h2.hl {
   line-height: 1em;
 }
 h3 {
-  color: #808080;
+  color: #606060;
+  font-size: 16pt;
 }
 h3.ts {
   margin: 0;
@@ -119,13 +130,21 @@ h3.by {
 p {
   font-size: 14pt;
 }
+li {
+  font-size: 14pt;
+}
 a {
-  color: #606060;
+  text-decoration: none;
 }
 a:hover {
   color: #F6A159;
 }
 img.inline {
+  max-width: 95%;
+  display: block;
+  margin: 0 auto;
+}
+pre.code {
   max-width: 80%;
   display: block;
   margin: 0 auto;
@@ -148,17 +167,6 @@ img.inline {
     height: 80px;
   }
 }
-ul {
-  list-style-type: none;
-  padding: 0px;
-  margin: 0px;
-}
-li {
-  font-size: 24pt;
-}
-a.home {
-  text-decoration: none;
-}
-a.home:hover {
-  text-decoration: none;
+div.article a {
+  color: blue;
 }

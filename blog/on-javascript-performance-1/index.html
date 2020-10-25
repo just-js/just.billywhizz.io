@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>just.js: On Javascript Performance</title>
+<title>Just(js): On Javascript Performance</title>
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-1371855-5"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -12,173 +12,312 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="description" content="A review of Javascript performance. Part 1 - Techempower Rankings." />
-<meta name="apple-mobile-web-app-title" content="just.js" />
-<meta name="application-name" content="just.js" />
-<meta name="msapplication-TileColor" content="#da532c" />
-<meta name="theme-color" content="#ffffff" />
-<meta charset="UTF-8" />
-<meta name="keywords" content="JavaScript,Techempower,Benchmark,Performance" />
-<meta name="author" content="Andrew Johnston" />
-<meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:description" content="On Javascript Performance - 1. Establishing a Baseline" />
-<meta name="twitter:title" content="1. Establishing a Baseline" />
-<meta name="twitter:site" content="@justjs14" />
-<meta name="twitter:image" content="https://just.billywhizz.io/blog/on-javascript-performance-1/tfbvis-query.png" />
-<meta name="twitter:creator" content="@billywhizz1970" />
-<meta name="twitter:image:alt" content="graph of multiple query performance for a range of frameworks on techempower" />
-<link rel="preload" as="style" href="/Roboto.css" rel="stylesheet" />
-<link rel="authorization_endpoint" href="https://indieauth.com/auth">
-<link rel="token_endpoint" href="https://tokens.indieauth.com/token">
-<link rel="micropub" href="https://api.billywhizz.io/micropub">
-<link rel="openid.delegate" href="https://billywhizz.io/" />
-<link rel="openid.server" href="https://openid.indieauth.com/openid" />
 <link href="/index.css" rel="stylesheet" />
+<link href="/vs.min.css" media="screen" rel="stylesheet" />
 <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
 <link rel="manifest" href="/site.webmanifest">
 <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="apple-mobile-web-app-title" content="just.js" />
+<meta name="application-name" content="just.js" />
+<meta name="msapplication-TileColor" content="#da532c" />
+<meta name="theme-color" content="#ffffff" />
 <link rel="alternate" type="application/rss+xml" title="RSS Feed for just.js javascript framework" href="/blog/index.xml" />
+<meta charset="UTF-8" />
+<meta name="keywords" content="JavaScript,Techempower,Benchmark,Performance" />
+<meta name="author" content="Andrew Johnston" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:description" content="A summary of techempower benchmark results for a new Javascript platform" />
+<meta name="twitter:title" content="On Javascript Performance - Techempower Ranking" />
+<meta name="twitter:site" content="@justjs14" />
+<meta name="twitter:image" content="https://just.billywhizz.io/blog/on-javascript-performance-1/header.png" />
+<meta name="twitter:creator" content="@billywhizz1970" />
+<meta name="twitter:image:alt" content="graph of composite scores for a range of frameworks on techempower" />
 </head>
 <body>
 <div class="container">
 <div class="header">
-<img src="first.png" />
+<img src="header.png" alt="Intermediate Results Top 10" />
 <hgroup>
-<h3 class="ts">13 October 2020</h3>
+<h3 class="ts">25 October 2020</h3>
 <h1 class="series">On Javascript Performance</h1>
-<h2 class="hl">1. Establishing a Baseline</h2>
-<h3 class="by">by <a class="author" target="_blank" rel="noopener" href="https://billywhizz.io">billywhizz</a></h3>
+<h2 class="hl">1. Techempower Rankings</h2>
+<h3 class="by">by <a target="_blank" rel="noopener" class="author" target="_blank" rel="noopener" href="https://billywhizz.io">billywhizz</a></h3>
 </hgroup>
 </div>
 <div class="article">
-<p class="first">
-  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec efficitur nunc in tellus egestas venenatis. Nam at lobortis augue. Integer sit amet nibh molestie, maximus mi at, finibus nisl. In maximus bibendum ante sit amet fringilla. Aenean mi augue, porttitor vel nibh et, venenatis gravida leo. Sed et tincidunt purus. Pellentesque laoreet cursus tellus sed convallis. Ut et dictum lacus, nec porta risus.
-</p>
-<h3>1.1 Caveat Emptor</h3>
-<p>
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec efficitur nunc in tellus egestas venenatis. Nam at lobortis augue. Integer sit amet nibh molestie, maximus mi at, finibus nisl. In maximus bibendum ante sit amet fringilla. Aenean mi augue, porttitor vel nibh et, venenatis gravida leo. Sed et tincidunt purus. Pellentesque laoreet cursus tellus sed convallis. Ut et dictum lacus, nec porta risus.
-</p>
-<a target="_blank" rel="noopener" href="https://www.techempower.com/benchmarks/#section=test&runid=9716e3cd-9e53-433c-b6c5-d2c48c9593c1&hw=ph&test=composite&a=2">
-  <img alt="techempower results for all frameworks" class="inline" src="techempower-composite.png" />
-</a>
-<br />
+<h2>Why is Javascript in the top 2 of techempower?</h2>
+<p class="first">This was a question that was recently <a target="_blank" rel="noopener" href="https://github.com/justjs/just/issues/5">asked</a> on github, prompted by the <a target="_blank" rel="noopener" href="https://www.techempower.com/benchmarks/#section=test&amp;runid=4389df09-c5d3-47fb-80a3-6ea787a9a895&amp;hw=ph&amp;test=composite&amp;a=2">arrival</a> of a new javascript platform near the summit of the intermediate <a target="_blank" rel="noopener" href="https://www.techempower.com/benchmarks/#section=intro">techempower</a> rankings. This platform, Just(js), is something I have been hacking on as a side-project for quite some time. Here I will attempt to give a brief answer to the question and will be following up with some further detail on this and the platform itself over the coming weeks.</p>
+<p>If you find yourself getting hot under the collar reading this, please read the <a href="#caveats">caveats</a> below before going any further.</p>
+<h2>What are the Techempower Rankings?</h2>
+<p>The techempower rankings have been running since 2013 and have become a very useful tool for a number of reasons.</p>
+<ul>
+<li>It's a great place to get a good overview of the various frameworks available in different languages and on different platforms.</li>
+<li>It covers a pretty good range of basic tasks any web service is going to need to perform. There are definitely some big gaps but the folks at techempower have plans to develop it further.</li>
+<li>It gives some useful insight into where the relative strengths and weaknesses of various platforms and languages lie.</li>
+<li>It is having an effect in highlighting weaknesses and driving efforts in many of these frameworks to improve performance. You can see consistent improvements across the board and in the average performance of the competing frameworks. While all such competitions should be taken with a large grain of salt, they do have an effect in <a target="_blank" rel="noopener" href="https://benediktmeurer.de/2016/12/16/the-truth-about-traditional-javascript-benchmarks/">driving efficiences</a>. The combined score of the top 5 frameworks has improved by 62% from 24k in <a target="_blank" rel="noopener" href="https://www.techempower.com/benchmarks/#section=data-r16">round 16</a> to 39k in <a target="_blank" rel="noopener" href="https://www.techempower.com/benchmarks/#section=data-r19">round 19</a> and it currently stands at 48k in the <a target="_blank" rel="noopener" href="https://www.techempower.com/benchmarks/#section=test&amp;runid=4389df09-c5d3-47fb-80a3-6ea787a9a895&amp;hw=ph&amp;test=composite&amp;a=2">latest</a> intermediate round.</li>
+</ul>
+<h2>What is Just(js)?</h2>
+<p><a target="_blank" rel="noopener" href="https://github.com/just-js">Just(js)</a> is a small, simple and hopefully efficient javascript server side framework built on top of the <a target="_blank" rel="noopener" href="https://v8.dev/">google v8</a> javascript engine. Currently it supports modern linux on x86_64 only. It is still quite a way from a stable beta but I am not expecting any big changes to functionality and the code base is very small (approx 5k lines of c++ and javascript) so it should not be a huge amount of work to bring it to some kind of stable state.</p>
+<p>I will go into more detail in future posts on the rationale and motivations behind it but for now I can say the main goals are to:</p>
+<ul>
+<li>have a small codebase and as few source files as possible (i.e. reduce the cognitive load)</li>
+<li>favour c-style function calls over complex OO structures</li>
+<li>be efficient in execution and memory usage</li>
+<li>be single platform only, which means the code is easier to understand without lots of macros and #ifdefs everywhere</li>
+<li>be easy to understand and hack on for anyone with some basic knowledge of c/c++ and linux system api's</li>
+<li>be a useful platform for learning more about the v8 engine and linux system apis</li>
+<li>be easy to extend and customise for embedders</li>
+<li>demonstrate that javascript can be a valid choice for building high performance system level software and network servers</li>
+</ul>
+<h2>Just Show Me The Results Already!</h2>
+<p>Okay, Okay! Here are the top 10 frameworks from the latest techempower intermediate run. Please read the <a href="#caveats">caveats</a> to understand why these results should be taken with a little skepticism for now.</p>
+<p><a href="header.png"><img class="inline" src="header.png" alt="Intermediate Results Top 10"></a></p>
 <p class="subimage">
-techempower results for all frameworks
+Intermediate Results Top 10
 </p>
-<p>
-Praesent sed orci in arcu congue faucibus. Suspendisse maximus nunc nisl, in semper nisi vulputate sit amet. Nam vitae faucibus sem. Etiam suscipit neque rutrum mi scelerisque, eget auctor est tempus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Praesent at purus a lacus dapibus vehicula. Maecenas scelerisque leo bibendum massa feugiat varius.
-</p>
-<p>
-Duis metus tortor, malesuada et pellentesque nec, tincidunt id quam. Cras ultrices velit augue, non vestibulum leo auctor dignissim. Suspendisse dictum quam vel metus tincidunt, eget consectetur dolor rhoncus. Aenean et mollis diam. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Vestibulum egestas tortor est, non sollicitudin ante bibendum sit amet. Quisque at consequat tellus. Ut faucibus, tortor eu tincidunt lobortis, velit turpis faucibus mi, nec venenatis justo enim ac elit.
-</p>
-<h3>1.2 The End at the Beginning</h3>
-<p>
-Nullam enim magna, egestas quis orci eu, elementum accumsan mauris. Nam purus mauris, ornare ac tempor at, blandit et orci. Suspendisse erat elit, facilisis eget odio non, tincidunt viverra leo. Vivamus sed mauris tellus. Sed vitae malesuada neque, eu sodales lacus. Praesent tempus pharetra vestibulum. Cras venenatis vitae magna sed scelerisque. Ut ac aliquam sem.
-</p>
-<a target="_blank" rel="noopener" href="https://www.techempower.com/benchmarks/#section=test&runid=9716e3cd-9e53-433c-b6c5-d2c48c9593c1&hw=ph&test=composite&l=2du9fp-2&a=2">
-  <img alt="techempower results for 'high level' language frameworks" class="inline" src="techempower-highlevel.png" />
-</a>
-<br />
+<p>You can see the full results <a target="_blank" rel="noopener" href="https://www.techempower.com/benchmarks/#section=test&amp;runid=4389df09-c5d3-47fb-80a3-6ea787a9a895&amp;hw=ph&amp;test=composite&amp;a=2">here</a>.</p>
+<p>There are a few things we can note:</p>
+<ul>
+<li>The top rankings are dominated by C++ and Rust frameworks, which is to be expected.</li>
+<li>Just(js) squeezes in just behind the top performing <a target="_blank" rel="noopener" href="https://github.com/matt-42/lithium">C++ framework</a> achieving 95% of its composite score and 4% ahead of the <a target="_blank" rel="noopener" href="https://github.com/an-tao/drogon">next best</a> performing C++ framework.</li>
+<li>Just(js) scores 10% and 13% better than the top performing <a target="_blank" rel="noopener" href="https://github.com/ntex-rs/ntex">Rust</a> <a target="_blank" rel="noopener" href="https://github.com/actix/actix">frameworks</a></li>
+<li>In comparison to other "high level" languages, Just(js) scores 32% higher than the best performing <a target="_blank" rel="noopener" href="https://github.com/aspnet">C#/.Net</a> and <a target="_blank" rel="noopener" href="https://jooby.io/">Java</a> frameworks.</li>
+<li>Just(js) scores 40% higher than the best performing <a target="_blank" rel="noopener" href="https://github.com/gofiber/fiber">Go framework</a>.</li>
+</ul>
+<p>When comparing to other Javascript frameworks the difference becomes quite stark.</p>
+<p><a href="js-frameworks.png"><img class="inline" src="js-frameworks.png" alt="Intermediate Results Javascript Frameworks"></a></p>
 <p class="subimage">
-techempower results for "high level" language frameworks
+Results for Javascript Frameworks
 </p>
-<p>
-Nam consequat tempor diam a finibus. Suspendisse a sodales nibh, non porttitor odio. Ut eu libero vel massa pharetra suscipit ac nec odio. Maecenas sed cursus quam. Morbi id sodales ante, id ultricies eros. Vestibulum luctus felis at augue euismod sodales. Nam iaculis sapien dui, ut pulvinar tortor commodo quis. Integer ut dui blandit purus mollis pellentesque sit amet quis urna. Pellentesque iaculis, eros nec ornare rutrum, ligula erat commodo velit, eget faucibus erat massa at nunc. Etiam lacinia venenatis massa ac lobortis. Praesent metus tellus, ultricies sed risus eget, aliquam vulputate augue. Nullam elementum convallis odio et placerat. Morbi porta porta ante non porta. Integer dictum ut nulla a egestas.
-</p>
-<h3>1.3 The End at the Beginning</h3>
-<p>
-Fusce sit amet convallis ligula, sit amet condimentum dolor. Vestibulum rhoncus semper sodales. Sed condimentum suscipit urna, at rhoncus neque ultrices ac. Nulla facilisi. Quisque sollicitudin tellus vitae lorem pretium varius. Ut molestie maximus vestibulum. Integer eleifend enim at scelerisque elementum. Fusce lobortis commodo diam, nec congue tortor congue nec. Cras sodales est sed orci condimentum eleifend. Duis euismod nunc libero, ut viverra enim aliquet sed.
-</p>
-<p>
-Phasellus cursus orci metus, eu feugiat augue rutrum a. Pellentesque efficitur neque et diam lacinia, nec imperdiet leo lacinia. Donec auctor nisi at bibendum dapibus. In hac habitasse platea dictumst. Sed quam nisl, volutpat eget diam a, tempus dapibus leo. Curabitur at mi laoreet, pellentesque mauris id, finibus tortor. In non tincidunt mauris, quis laoreet magna. Nullam varius elit at mollis aliquet. Nunc facilisis, diam et pharetra imperdiet, lorem tortor dictum dui, id commodo magna sapien feugiat diam. Phasellus blandit justo nec tellus luctus egestas in quis sem. Phasellus pharetra in dolor ac gravida.
-</p>
-<a target="_blank" rel="noopener" href="https://www.techempower.com/benchmarks/#section=test&runid=9716e3cd-9e53-433c-b6c5-d2c48c9593c1&hw=ph&test=composite&l=hr8lxb-1r&a=2">
-  <img alt="techempower results for javascript frameworks" class="inline" src="techempower-javascript.png" />
-</a>
-<br />
+<ul>
+<li>Just(js) scores 2x higher than the next best performing Javascript framework, <a target="_blank" rel="noopener" href="https://github.com/reactiverse/es4x">es4x</a> which is based on Vert.x and the JVM.</li>
+<li>It scores 5x-6x higher than the <a target="_blank" rel="noopener" href="https://github.com/lukeed/polkadot">best</a> Node.js based Javascript <a target="_blank" rel="noopener" href="https://www.fastify.io/">frameworks</a>.</li>
+</ul>
+<h2>How Does Just(js) Achieve These Scores?</h2>
+<p>Well, it was <em>a lot</em> of hard work. My initial attempts, which I benchmarked on my laptop against the best C++, Rust and Javascript frameworks were so-so.</p>
+<p><a href="initial.png"><img class="inline" src="initial.png" alt="Initial Tests"></a></p>
 <p class="subimage">
-techempower results for javascript frameworks
+Results of Inital Local Tests
 </p>
-<p>
-Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Integer posuere risus arcu, interdum aliquet magna fringilla id. Aliquam erat volutpat. Nullam venenatis efficitur nibh vitae viverra. Aliquam a orci luctus, rutrum enim vel, semper arcu. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Maecenas tincidunt, mauris nec ullamcorper iaculis, magna ipsum pharetra turpis, sed ornare nunc est eget ipsum. Morbi pharetra est id ligula convallis fringilla. Ut at tellus aliquam urna posuere ornare nec id est. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Etiam libero est, vulputate at eros ac, ornare posuere libero. Cras ut diam in purus porttitor tempus non sit amet velit. Nulla facilisi.
-</p>
-<p>
-Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Aenean eget tempus libero. Praesent mollis ac nulla eu dapibus. Nunc luctus nulla arcu, sit amet suscipit lacus malesuada at. Nulla consectetur lorem ut augue iaculis, eu efficitur nulla vestibulum. Duis aliquam turpis leo, et dictum metus iaculis id. Donec dapibus, orci non pellentesque ultrices, risus eros congue sem, sed faucibus diam urna vitae nunc. Nunc eu consectetur dolor.
-</p>
-<h3>1.4 The End at the Beginning</h3>
-<a target="_blank" rel="noopener" href="https://www.techempower.com/benchmarks/#section=test&runid=9716e3cd-9e53-433c-b6c5-d2c48c9593c1&hw=ph&test=composite&a=2">
-  <img alt="techempower results for all frameworks" class="inline" src="tfbvis-query.png" />
-</a>
-<br />
+<p>I was only seeing 50% of the best performers, with particularly bad scores for the multi-query, update and Fortunes tests, which are the most relevant ones to real-world scenarios.</p>
+<p><a href="initial-detail.png"><img class="inline" src="initial-detail.png" alt="Initial Tests Detail"></a></p>
 <p class="subimage">
-techempower results for all frameworks
+Detail of Initial Local Tests
 </p>
-<p>
-Sed luctus est ex, vitae interdum mauris sollicitudin eget. Nam quam enim, cursus quis imperdiet vitae, bibendum at eros. Suspendisse ut consequat augue. Morbi egestas, velit ac faucibus placerat, elit est vehicula quam, at volutpat urna metus eu purus. Integer vitae convallis lorem. Nullam congue scelerisque quam, sed semper ligula congue non. Nunc luctus lorem eget lacus faucibus dapibus. Vestibulum in libero laoreet, aliquet augue vel, pulvinar sem. Etiam pretium sagittis justo, ut imperdiet erat aliquet ac.
-</p>
-<h3>1.5 The End at the Beginning</h3>
-<p>
-Praesent vestibulum erat ut dolor varius, nec porta nisl mattis. In sit amet pulvinar augue. Quisque molestie eget urna at eleifend. Vestibulum at convallis risus. Vestibulum gravida dapibus orci, nec volutpat lectus commodo eget. Donec hendrerit lacus in ipsum maximus, non vehicula leo pulvinar. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Vivamus arcu felis, semper eu lorem lacinia, volutpat fermentum felis. Sed aliquet nisl quis arcu vestibulum sagittis. Cras tempus massa sed elementum lobortis. Quisque blandit mi est, sed tincidunt lectus faucibus ac. Quisque a justo sapien. Phasellus consectetur mauris id faucibus luctus.
-</p>
-<p>
-Suspendisse gravida vestibulum tincidunt. In et vulputate nulla. Proin feugiat, arcu eu pretium sodales, tortor est vehicula arcu, a volutpat elit leo in dolor. Nam faucibus tempor massa, luctus malesuada erat tincidunt id. Cras iaculis ante ipsum, in pulvinar nisi semper eu. Vestibulum elementum vestibulum nunc, et ornare ipsum commodo id. Sed suscipit ultrices urna, posuere aliquet odio pharetra eget. Pellentesque pretium hendrerit lectus, at rhoncus nulla cursus non.
-</p>
-<a target="_blank" rel="noopener" href="https://www.techempower.com/benchmarks/#section=test&runid=9716e3cd-9e53-433c-b6c5-d2c48c9593c1&hw=ph&test=composite&a=2">
-  <img alt="techempower results for all frameworks" class="inline" src="despair.png" />
-</a>
-<br />
+<p>I wasn't too disappointed by that but still had plenty of room for optimizations and had a strong feeling that big improvements could be made, so I set to work.</p>
+<h3>Postgres API</h3>
+<p>My initial attempt was using a <a target="_blank" rel="noopener" href="https://github.com/just-js/modules/tree/main/pg">C++ module</a> interfacing with the official <a target="_blank" rel="noopener" href="https://www.postgresql.org/docs/current/libpq.html">libpq</a> c api. I did a lot of testing and traffic analysis against this and came up against bottlenecks I could not explain so decided to abandon it and try to write a Javascript library to interface with Postgres instead. I later discovered (by examining the source code of the other frameworks) that there is <a target="_blank" rel="noopener" href="https://www.postgresql.org/message-id/attachment/112272/v18-0001-libpq-batch-support.patch">a patchset</a> for libpq which resolves these issues so I may revisit the C++ binding in the future.</p>
+<p>After a number of days poring over the postgres docs and testing, I was happy with the surprisingly good results I was seeing from the <a target="_blank" rel="noopener" href="https://github.com/just-js/techempower/blob/main/lib/pg.js">Javascript code</a> i put together. I had to work hard to ensure I was doing as few heap allocations as possible and worked in various optimizations like being able to <a target="_blank" rel="noopener" href="https://github.com/just-js/techempower/blob/main/lib/connection.js#L138">pre-compile</a> the queries into ArrayBuffers and using prepared statements in Postgres, which is much faster than doing raw Sql queries.</p>
+<p>Here is a little snippet of How the pre-compiled queries work:</p>
+<pre class="code">
+<code class="javascript">
+sock.allFortunes = await compile(sock, {
+  formats: [],
+  sql: 'select * from Fortune',
+  fields: [{ format: 1, oid: INT4OID }, { format: 0, oid: VARCHAROID }],
+  name: 's2',
+  portal: '',
+  maxRows: 0,
+  htmlEscape: true,
+  params: []
+})
+</code>
+</pre>
+<p>and how this is called:</p>
+<pre class="code">
+<code class="javascript">
+const { allFortunes } = sock
+
+allFortunes.call(() => {
+  const html = getHTML(insertionSort([extra, ...allFortunes.getRows()]))
+  sock.writeString(`${rHTML}${utf8Length(html)}${END}${html}`)
+})
+</code>
+</pre>
+<h3>Micro Optimisations</h3>
+<p>I also added some further optimizations which allowed me to squeeze out a few more drops of performance:</p>
+<ul>
+<li>I am <a target="_blank" rel="noopener" href="https://github.com/just-js/modules/blob/main/picohttp/http.cc">using</a> <a target="_blank" rel="noopener" href="https://github.com/h2o/picohttpparser">picohttpparser</a> which takes advantage of SSE4 instructions for blazing fast http parsing.</li>
+<li>Using <a target="_blank" rel="noopener" href="https://github.com/lucagez/slow-json-stringify">slow-json-stringify</a> instead of native JSON.stringify made a small but noticeable difference across the board.</li>
+<li>Doing the HTML escaping <a target="_blank" rel="noopener" href="https://github.com/just-js/techempower/blob/main/lib/connection.js#L238">at the same time</a> as reading the strings from the ArrayBuffers coming back from Postgres made quite a difference in the Fortunes test. Strings are allocated on the v8 heap and if they are short lived they have to be garbage collected which hurts performance quite a lot. I admit escaping the string at the database driver level is a little bit of a cheat so I will likely revisit this when I have some time.</li>
+<li>I noticed that other frameworks were using single queries to do the updates rather than a query for each update and adopted this approach too. You can see what it looks like <a target="_blank" rel="noopener" href="https://github.com/just-js/techempower/blob/main/techempower.js#L45">here</a>.</li>
+<li>I was unable to find a fast enough html templating library for the Fortunes test so need to do some further work to come up with an optimal solution for that. For now, the html is <a target="_blank" rel="noopener" href="https://github.com/just-js/techempower/blob/main/techempower.js#L175">being built manually</a> which is again a little bit of a cheat, but I am confident I can find something that works and provides equivalent performance.</li>
+<li>Because the results for the Fortunes test are small I found a simple <a target="_blank" rel="noopener" href="https://github.com/just-js/techempower/blob/main/techempower.js#L188">insertion sort</a> was quicker than the out of the box Array.sort in Javascript/v8.</li>
+</ul>
+<p>// TODO - update all the links to a specific release</p>
+<h2>Techempower Environment</h2>
+<p>Techempower run <a target="_blank" rel="noopener" href="https://www.techempower.com/benchmarks/#section=environment">the tests</a> on 3 Dell R440 servers each of which has an Intel Xeon Gold 5120 CPU with 28 threads and a dedicated Cisco 10Gbps ethernet adaptor.</p>
+<p>The framework being tested runs on one machine, the database on another and the benchmarking tool (which uses wrk) runs on the third. Everything runs inside of docker using Host networking so the overhead from that should be minimal.</p>
+<h2>Initial Submission</h2>
+<p>Having done all this work, I was now seeing my framework match the best frameworks on my local tests so was reasonably confident I could score well in the techempower environment.</p>
+<p><a href="local-final.png"><img class="inline" src="local-final.png" alt="Final Results of Local Tests"></a></p>
 <p class="subimage">
-techempower results for all frameworks
+Final Results of Local Tests
 </p>
-<p>
-Ut efficitur neque erat, a elementum odio ullamcorper ac. Quisque dui odio, egestas et commodo ac, ultrices ut tortor. Praesent quis turpis sed eros elementum pellentesque porta sed erat. Mauris ac tincidunt est. In quam lorem, eleifend porttitor nisl a, cursus elementum tellus. Vivamus justo felis, sagittis quis mi id, lacinia porta est. Praesent congue porta semper. Cras posuere elit sit amet vestibulum hendrerit. Donec a lacus sit amet nibh vulputate cursus. Sed non accumsan libero. Cras at tortor nibh. Sed malesuada mattis hendrerit. Aenean hendrerit, odio in lobortis tincidunt, diam magna iaculis urna, sed iaculis magna sapien non dui. Morbi efficitur facilisis eros, eu accumsan mauris semper quis. Morbi convallis erat scelerisque sem fringilla, sed lobortis risus commodo. Suspendisse non libero eu risus rutrum interdum.
-</p>
-<p>
-Cras lectus ipsum, vulputate et risus id, feugiat auctor mauris. Nunc a volutpat lacus. Curabitur viverra sed leo vitae vestibulum. Quisque lacus odio, imperdiet non semper mollis, molestie ac ligula. Curabitur mollis velit in mi placerat ultrices. Nunc iaculis semper mollis. Praesent dignissim est erat. Integer accumsan vel ipsum id mollis. Donec ultricies odio justo, at consectetur ante interdum ut. Vivamus efficitur ac nulla at dapibus. Fusce scelerisque elit nisi, ut volutpat erat semper nec.
-</p>
-<p>
-Vivamus volutpat sed enim malesuada lacinia. Donec in efficitur augue. Fusce vitae sapien ac magna maximus tincidunt. Donec dignissim ornare justo, vitae semper dolor euismod placerat. Donec at lorem vel ante pellentesque tincidunt. Nunc rutrum magna vitae tempus vestibulum. In accumsan egestas feugiat. Cras ultricies rutrum lorem, eget rhoncus metus ullamcorper quis. In hac habitasse platea dictumst. Vestibulum eleifend placerat mi, sed pharetra risus. Aliquam fringilla tellus a mi ullamcorper, eu ultrices quam tincidunt. Nulla eu augue diam.
-</p>
-<h3>1.6 The End at the Beginning</h3>
-<a target="_blank" rel="noopener" href="https://www.techempower.com/benchmarks/#section=test&runid=9716e3cd-9e53-433c-b6c5-d2c48c9593c1&hw=ph&test=composite&a=2">
-  <img alt="techempower results for all frameworks" class="inline" src="despair.png" />
-</a>
-<br />
+<p>I made my submission, waited for it to be reviewed and accepted and then waited anxiously while the techempower servers churned through the tests. The total run takes about 5 days each time so I was hugely disappointed when my initial submission failed on the actual run. This was down to the DNS working differently in the production environment than it does in techempowers CI system.</p>
+<p>I made <a target="_blank" rel="noopener" href="https://github.com/TechEmpower/FrameworkBenchmarks/pull/5998/files#diff-8ea032b8acd0d08eacd31ec942cbde8316c4f868c29551ef758f3a889f5df23a">some changes</a> to the dns code to use /etc/resolv.conf and /etc/hosts to determine the IP address of the database once I realised the production environment was using the --add-host docker option to inject the database IP address into the container /etc/hosts file.</p>
+<p>Thankfully, after some more anxious waiting, the tests were successful next time around but I was a little disappointed to see Just(js) had only <a target="_blank" rel="noopener" href="https://www.techempower.com/benchmarks/#section=test&amp;runid=8ee18501-8947-4847-9449-f8b5dde1ba2d&amp;hw=ph&amp;test=composite&amp;a=2">placed 5th</a> overall, scoring around 70% of the best performing framework.</p>
+<p><a href="techempower-first.png"><img class="inline" src="techempower-first.png" alt="Initial Techempower Result"></a></p>
 <p class="subimage">
-techempower results for all frameworks
+Results of Initial Run on Techempower
 </p>
-<p>
-Phasellus condimentum risus sit amet odio vulputate suscipit. Integer tempus dui eu nisl lobortis ullamcorper in vehicula neque. Phasellus eu mauris risus. Duis viverra venenatis porta. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Duis fermentum posuere rutrum. Aliquam pretium auctor odio vitae feugiat. Sed quis lacinia risus.
-</p>
-<p>
-Nam suscipit risus nunc, ut malesuada lectus lobortis eu. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nam bibendum finibus augue, at molestie justo. Cras dignissim mi id felis eleifend dictum. Mauris eget dolor ac est efficitur suscipit. Quisque risus elit, euismod ut elit non, viverra pulvinar nisl. Donec suscipit accumsan enim id sollicitudin. Nullam dolor lorem, consequat vitae risus eu, bibendum pellentesque felis. Nunc scelerisque, ipsum at blandit vehicula, purus justo commodo libero, quis pharetra elit nunc non felis. Sed a vehicula augue. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Curabitur eget metus bibendum, egestas augue id, consectetur est. Sed eu est consequat, vehicula magna vel, congue dui. Aliquam in nulla a dui rhoncus vulputate vitae a tortor.
-</p>
-<p>
-Duis nulla ipsum, dapibus nec varius tristique, interdum fringilla libero. Donec et nulla ut ipsum volutpat hendrerit sit amet nec ante. Suspendisse potenti. Fusce ultrices magna at leo efficitur cursus. Ut vel diam id ex blandit lacinia et sed tellus. Sed lacinia eget mi id lacinia. Praesent porta metus eget odio congue rhoncus. Maecenas lobortis ex at placerat maximus. Quisque ac risus enim. Sed est massa, cursus ut eleifend sed, dictum ac neque. Praesent a lacinia lectus.
-</p>
-<h3>1.7 The End at the Beginning</h3>
-<a target="_blank" rel="noopener" href="https://www.techempower.com/benchmarks/#section=test&runid=9716e3cd-9e53-433c-b6c5-d2c48c9593c1&hw=ph&test=composite&a=2">
-  <img alt="techempower results for all frameworks" class="inline" src="despair.png" />
-</a>
-<br />
+<p>After my intial disappointment, I decided this was actually quite a respectable score, with only lower level Rust and C++ frameworks scoring higher, so I gave it a rest for a few days and pondered what could be causing the discrepancy between my local tests and the ones in the production environment.</p>
+<p>With my batteries recharged, I decided to rent some time on a similarly specced server from <a target="_blank" rel="noopener" href="https://www.packet.com/">Packet.com</a> (now Equinix Metal) and see if i could reproduce the issue in a similar environment. After a lot of perf and strace investigation I noticed that there was a huge amount of system call overhead and noticed that there this was being dominated by calls to pthread_mutex_lock and pthread_mutex_unlock, so I decided to dig into the v8 code to see what could be causing this.</p>
+<p>I eventually tracked the issue down to <a target="_blank" rel="noopener" href="https://github.com/v8/v8/blob/8.5.210/src/heap/array-buffer-tracker-inl.h#L75">this code</a>. It seems that every time we call ArrayBuffer-&gt;GetBackingStore() v8 uses a mutex to avoid races on reading the backing memory. I am guessing this is because the GC runs on a separate thread but need to investigate further. I raise the issue on the v8-users google group and am hoping I can put together a reproducible issue report for the v8 team to look at.</p>
+<p>At this point, I was really scratching my head as to what I could do but while testing on the packet server I noticed that the issue got worse the more threads I used. The initial submission was <a target="_blank" rel="noopener" href="https://github.com/TechEmpower/FrameworkBenchmarks/commit/235140573723c17c1166368c4fdc591c2ddca46d#diff-356f4e29a849192441ffde985db508902ac02f1d110c75110fefe083140163c9">spawning a thread</a> for each server instance so I decided to try using processes instead of threads.</p>
+<p>This turned out to be the breakthrough I was hoping for and I saw a huge improvement on the packet server over the threaded approach. I am still not too sure why this is but my guess would be the v8 heap and/or GC are shared across the threads when using a thread for each v8 Isolate which means lots of contention on those mutexes reading from the ArrayBuffers.</p>
+<p>After submitting my changes the <a target="_blank" rel="noopener" href="https://www.techempower.com/benchmarks/#section=test&amp;runid=9716e3cd-9e53-433c-b6c5-d2c48c9593c1&amp;hw=ph&amp;test=composite&amp;a=2">next Techempower run</a> showed a huge improvement. Just(js) was now placing 2nd overall and within 5% of the top performing framework, and has maintained its position on subsequent runs.</p>
+<p><a href="techempower-second.png"><img class="inline" src="techempower-second.png" alt="Improved Techempower Result"></a></p>
 <p class="subimage">
-techempower results for all frameworks
+Improved Techempower Results
 </p>
-<p>
-In consequat, lorem ac auctor accumsan, ligula lectus faucibus ligula, sit amet vulputate eros lectus interdum sem. Nunc nulla ante, porttitor ut justo eu, auctor pretium ligula. Suspendisse a dolor id elit facilisis semper sollicitudin sit amet arcu. In condimentum, urna vitae laoreet aliquet, libero felis venenatis orci, eget venenatis nulla ex eget lectus. Cras facilisis sapien id semper tincidunt. Ut aliquet sit amet erat vitae volutpat. Praesent at scelerisque enim, id fermentum sem. Duis viverra vehicula scelerisque. Nunc quis hendrerit lacus, dignissim placerat dui. Suspendisse nec risus ut ex luctus imperdiet. Fusce tristique pharetra orci vitae mollis. Ut quam nunc, semper sit amet ultrices vel, cursus ac nibh. Proin semper nisl posuere libero posuere fringilla. Mauris sapien metus, scelerisque a augue non, accumsan luctus nibh. In pharetra laoreet porttitor. Duis feugiat dolor at velit finibus pulvinar.
+<p>You can see the huge reduction in syscall overhead in these two graphs for the multi query test:</p>
+<a href="syscall-overhead.png"><img class="inline" src="syscall-overhead.png" alt="Sycall Overhead"></a></p>
+<p class="subimage">
+Syscall Overhead in Initial Results
 </p>
-<p>
-Duis id luctus augue. Donec mi urna, pharetra nec vehicula vel, laoreet nec justo. Sed eu lectus venenatis, interdum erat in, pellentesque massa. Vestibulum consectetur id nulla a scelerisque. Quisque molestie vitae odio eu egestas. Phasellus suscipit tincidunt turpis, sed volutpat diam molestie nec. Ut sapien odio, placerat a consectetur et, pretium non velit. Sed quis lacus augue. Nulla eget lacus arcu.
+<a href="syscall-overhead-fixed.png"><img class="inline" src="syscall-overhead-fixed.png" alt="Sycall Overhead Fixed"></a></p>
+<p class="subimage">
+Improved Results after Switch from Threads to Processes
 </p>
+<p>That is showing a drop of 80% total CPU time just from switching from threads to processes. Hopefully I can get to the bottom of why this issue is happening when using the threaded approach.</p>
+<h2>Individual Test Analysis</h2>
+<p>Now, I'll take a look in some more detail at the individual tests and how Just(js) compares to other frameworks on those. I used this really <a target="_blank" rel="noopener" href="https://ajdust.github.io/tfbvis/">nice tool</a> which allows us to see more of the detail than the techempower website does. I also made some tweaks locally (link?) to it so I could see the Requests Per Second Per Thread which gives us a better insight into the relative performance than the raw RPS numbers.</p>
+<p>I have chosen a subset of the frameworks for comparison here:</p>
+<ul>
+<li>The two best performing C++ frameworks - lithium and drogon</li>
+<li>The two best performing Rust frameworks - ntex and may-minihttp</li>
+<li>The two best performing Go frameworks - fiber and fasthttp</li>
+<li>The two best performing Java frameworks - jooby and wizardo-http</li>
+<li>The best performing C#/.Net framework - aspcore</li>
+<li>The best performing PHP framework - php-ngx</li>
+<li>The five best performing Javascript frameworks - Just(js), es4x, polkadot, nodejs and fastify</li>
+</ul>
+<p>I am only discussing raw throughput and CPU usage below. I will hopefully be able to go into more detail on Memory and Latency results in a future post.</p>
+<p>You can read more about the details of these tests <a target="_blank" rel="noopener" href="https://github.com/TechEmpower/FrameworkBenchmarks/wiki/Project-Information-Framework-Tests-Overview">here</a>.</p>
+<h3>Plaintext</h3>
+<p>The plaintext test is the simplest one of all and probably the least useful but it does give us some idea of raw performance of the HTTP parser and network apis. The results for this also come with a large caveat that the top performing frameworks all score around the same. This is because the 10Gbps network is saturated at 7m requests per second.</p>
+<p><a href="plaintext.png"><img class="inline" src="plaintext.png" alt="Plaintext Detailed Results"></a></p>
+<p class="subimage">
+Detailed Plaintext Results
+</p>
+<p>We can see from the RPS per thread numbers that there is quite a variance between the best performing frameworks even through their total RPS scores are similar.</p>
+<p>Just(js) surprisingly comes out on top in this test, beating lithium (C++) by 3% on Request Per Second Per Thread. It beats the best performing Rust framework by 17%, C# by 27%, Java by 38%, Go by 50%, Javascript/Vert.x by 84% and Javascript/Node.js by 93%.</p>
+<p>You can see the top 5 frameworks in this graph are not maxing out on CPU. This is because the network is the bottleneck on this test. Hopefully techempower will be able to run the tests on 40G ethernet at some point or redesign the tests to address this shortcoming.</p>
+<p>Just(js) is only using 50% of the available CPU (65% User, 35% System) to serve 7m requests / 10 Gb data transfer per second which indicates it could theoretically achieve near 14m requests per second or 20Gb/sec on 28 cores fully utilised. Those are some pretty amazing numbers for a language that tends to receive a lot of criticism for being sub-standard in performance on the server side at least.</p>
+<p>I'm surprised Go and Java score as low as they do on this test so there may be some room for improvement in the implementation in those languages. I would also think there could be some optimisations made to the Node.js and PHP implementations.</p>
+<h3>JSON</h3>
+<p>The JSON test is a little more real-world than plaintext and gives us some idea of relative performance of JSON serialization across the tested frameworks.</p>
+<p><a href="json.png"><img class="inline" src="json.png" alt="JSON Detailed Results"></a></p>
+<p class="subimage">
+Detailed JSON Results
+</p>
+<p>In this test Just(js) comes a close second on RPS/Thread, 9% below the best performing framework, Lithium/C++. We can also see that CPU is not maxed out for Just(js) and Lithium with Lithium only utilising 85% of the available CPU. It is likely in this case the benchmarking client is maxing out on CPU but don't currently have any insight into the number for that or for the Postgres server. It would be nice if we could have these numbers included in the techempower datasets at some point in the future.</p>
+<p>For RPS/Thread, Just(js) scores 9% below the best C++ framework here, 2% above the best Rust framework, 5% above the best Java framework, 20% above the best Go and PHP frameworks, 25% above the best C# framework, 41% above Javascript/Vert.x and 64% above Node.js.</p>
+<h3>Single Query</h3>
+<p>This test is the first one involving a database and runs one query per request, serialising the results to JSON.</p>
+<p><a href="single.png"><img class="inline" src="single.png" alt="Single Query Detailed Results"></a></p>
+<p class="subimage">
+Detailed Single Query Results
+</p>
+<p>In this test Just(js) comes second to Lithium by quite a distance - 27%. I haven't quite figured out why it is so far behind as it out-performs Lithium on the Multi-Query and Update tests so I will have to do some further investigation to see if I can close the ground a little here.</p>
+<p>Just(js) scores 27% below the best C++ framework, 9% above the best Rust framework, 11% above Java, 21% above Javascript/Vert.x, 23% above PHP, 30% above Go, 32% above C# and 60% above Node.js.</p>
+<p>You can also notice that many of the frameworks, including Just(js), are not maxing out on CPU here. In the best performers this is likely down to the database being maxed out but again it is not possible to determine this as we don't get that data from the techempower datasets. For the lower-scoring frameworks it is likely due to latency introduced by the libpq drivers being used to communicate with Postgres.</p>
+<h3>Fortunes</h3>
+<p>The Fortunes test is probably the most realistic one and involves selecting a number of rows from the database, inserting a new row into the resultset dynamically and then sorting and html escaping the results before serialising to JSON.</p>
+<p><a href="fortunes.png"><img class="inline" src="fortunes.png" alt="Fortunes Detailed Results"></a></p>
+<p class="subimage">
+Detailed Fortunes Results
+</p>
+<p>This is the test where we see the worst performance for Just(js) in comparison to the best performing C++ and Rust frameworks. I had to work pretty hard to get good performance on this test and am not sure if it could be optimised much further. The biggest bottleneck for Just(js) here is having to escape each field in the resultset individually which means creating lots of heap allocated strings in v8 which have to be garbage collected. I'm still hopeful I could come up with a better approach that would allow escaping all the strings in a single call into the C++ runtime which should improve things.</p>
+<p>Just(js) lands in 5th place here, 26% behind the best performing C++ frameworks, 16% behind Rust, 13% above Java, 17% above C#, 19% above Go, 25% above PHP, 40% above Javascript/Vert.x and 57% above Node.js.</p>
+<p>Again, it looks like a number of frameworks here (Lithium and Wizardo-Http in particular) are hitting a bottleneck. It is not possible to determine at the moment what this is but it is unlikely to be the database and more likely something internal to the postgres client libraries being used.</p>
+<h3>Multiple Queries</h3>
+<p>The multi-query test requires frameworks to retrieve 20 randomly selected rows from the database as 20 individual queries, coalesce the results and serialise them to JSON.</p>
+<p><a href="multi.png"><img class="inline" src="multi.png" alt="Multiple Queries Detailed Results"></a></p>
+<p class="subimage">
+Detailed Multi-Query Results
+</p>
+<p>This is the first test where Just(js) has quite a big lead. This is likely due to the fact it is using a custom postgres client written in Javascript and taking full advantage of pipelining of requests. It also avoids sending a Sync/Commit on every query. As far as I am aware this is within the rules but will be happy to make changes to sync on every query if it is not.</p>
+<p>We can also see from these results that the database has now become the bottleneck. Just(js) is only using 15% of available CPU which means it is spending 85% of it's time idle while waiting for results to return from the database. It would be nice if techempower can modify the tests at some point to provide more resources to the database server so we can max out CPU on the frameworks server and see what the results look like then.</p>
+<p>In this test, Just(js) hits 16k request per second per thread or 66k request per second overall on 16% of available processing power.</p>
+<p>Just(js) finishes in first place here, 23% above the best C++ framework, 84% above the best Rust framework, 86% above PHP, 87% above Java, 90% above Javascript/Vert.x, 91% above Go, 94% above C# and 96% above Node.js.</p>
+<p>Those are some pretty astounding numbers!</p>
+<h3>Updates</h3>
+<p>The updates test requires retrieving 20 randomly selected rows from the database as 20 individual queries and then updating each of those rows with a new random value. Techempower allow batching of the updates but not the queries and Just(js) takes advantage of this.</p>
+<p><a href="update.png"><img class="inline" src="update.png" alt="Updates Detailed Results"></a></p>
+<p class="subimage">
+Detailed Updates Results
+</p>
+<p>Again in this test, Just(js) has a large lead and this is likely mostly due to the pipelining ability of the postgres client library.</p>
+<p>We can see once again that the bottleneck here is the database, to an even greater degree than the Multi-Query test. This makes sense as the database is having to do a lot more work when updating rows than selecting and I have observed in my own tests significant load on the Postgres <a target="_blank" rel="noopener" href="http://dtrace.org/blogs/dap/2019/05/22/visualizing-postgresql-vacuum-progress/">vacuum process</a>.</p>
+<p>In this test, Just(js) manages 14k request per second per thread or 36k request per second overall on 9.4% of available processing power.</p>
+<p>Just(js) finishes in first place here, 42% above the best C++ framework, 80% above Rust, 82% above Java, 85% above Javascript/Vert.x, 90% above Go, 91% above PHP and 98% above Node.js.</p>
+<h2>Highlights and Conclusions</h2>
+<p>To summarise the results we can see that:</p>
+<ul>
+<li>Just(js) places 1st in plaintext, 2nd in JSON, 2nd in Single Query, 5th in Fortunes, 1st in Multi-Query and 1st in updates for Requests Per Second Per Thread.</li>
+<li>On the overall techempower composite scores, it places 2nd overall, neck and neck with the best performing low-level C++ and Rust frameworks.</li>
+<li>It scores 6% below the best performing C++ framework overall</li>
+<li>It scores 11% above the best performing Rust framework overall</li>
+<li>On the composite scores, it finishes above all other higher level language frameworks, 1.5x the score of Java and C#, 1.7x Go, 2x Javascript/Vert.x and PHP and over 5x the score of Node.js</li>
+<li>95th percentile across all frameworks</li>
+<li>Compared to other high level language frameworks it scores more than 5x the best (Java) on Updates and more than 5x on Multiple Queries</li>
+</ul>
+<p>These are some pretty impressive numbers to say the least and are way beyond my expectations when I began this adventure. Even taking into account the many caveats outlined below and the flaws in the current benchmarking process I feel confident in asserting Javascript is capable of holding it's own against the best performing frameworks for the scenarios covered by these tests. Hopefully the folks at techempower can continue to develop and improve their process and we can see Javascript continue to shine going forward.</p>
+<p>I put a huge amount of work into this in recent months but I don't wish to take credit for these results. This is all down to the amazing work being done by the v8 team in consistently pushing the boundaries of what Javascript can do.</p>
+<p>I would like to say a big thank you to the folks at Techempower for providing this resource to the community and for the help and support they provided during my investigations.</p>
+<p>I hope you enjoyed reading and find the conclusions interesting. If you want to discuss the Just(js) framework or get involved please get in touch with a DM on <a target="_blank" rel="noopener" href="https://twitter.com/justjs14">twitter</a> or leave a <a href="#comments">comment</a> below.</p>
+<a name="caveats" class="anchor"></a><h2>Caveat Emptor</h2>
+<p>Please take these techempower results and my musings above with a healthy degree of skepticism. There are a number of points I want to be clear on in order to avoid any controversy:</p>
+<ul>
+<li><p>Benchmarks in general are a <a target="_blank" rel="noopener" href="http://highscalability.com/blog/2016/4/13/10-stack-benchmarking-dos-and-donts.html">bit of a minefield</a>. Every benchmark will have it's flaws and biases and there are a whole range of other factors beyond peak performance that need to be assessed when choosing a platform or framework for building web services.</p>
+</li>
+<li><p>The techempower results discussed here are from an intermediate run and are not official. The current official rankings are from <a target="_blank" rel="noopener" href="https://www.techempower.com/benchmarks/#section=data-r19&amp;hw=ph&amp;test=composite">May 2020</a> and I am not sure when the next official round is planned for but I'm hopeful Just(js) can maintain it's position when they are published.</p>
+</li>
+<li><p>The results are also using a set of <a target="_blank" rel="noopener" href="https://github.com/TechEmpower/FrameworkBenchmarks/wiki/TechEmpower-Performance-Rating-(TPR)#scoring-algorithm">weightings</a> from round 19 which have not been adjusted to take into account the latest intermediate results. I don't expect this to make much difference to the results though.</p>
+</li>
+<li><p>I am not making any claim for Just-JS to be "better" than any other platform. It is still in the very early stages of development and there is still a lot of work that needs to be done to make the platform more robust and feature complete. It is being compared to many mature and widely used frameworks which are going to be much more robust and have many more advanced features than Just-JS.</p>
+</li>
+<li><p>Having said all of this, one of the main goals of Just(js) is to be as high performance as possible out of the box and I set myself the goal earlier this year of achieving a creditable ranking in techempower in order to establish a baseline before doing any more major work on the platform itself.</p>
+</li>
+</ul>
+<h2>References</h2>
+<ul>
+<li>Just(js) Javascript Platform: <a target="_blank" rel="noopener" href="https://github.com/just-js">https://github.com/just-js</a></li>
+<li>Techempower Introduction: <a target="_blank" rel="noopener" href="https://www.techempower.com/benchmarks/#section=intro">https://www.techempower.com/benchmarks/#section=intro</a></li>
+<li>Techempower Test Environment: <a target="_blank" rel="noopener" href="https://www.techempower.com/benchmarks/#section=environment">https://www.techempower.com/benchmarks/#section=environment</a></li>
+<li>Techempower Intermediate Results: <a target="_blank" rel="noopener" href="https://www.techempower.com/benchmarks/#section=test&amp;runid=4389df09-c5d3-47fb-80a3-6ea787a9a895&amp;hw=ph&amp;test=composite&amp;a=2">https://www.techempower.com/benchmarks/#section=test&amp;runid=4389df09-c5d3-47fb-80a3-6ea787a9a895&amp;hw=ph&amp;test=composite&amp;a=2</a></li>
+<li>TFBVis - Techempower Visualization Tool: <a target="_blank" rel="noopener" href="https://ajdust.github.io/tfbvis/">https://ajdust.github.io/tfbvis/</a></li>
+<li>The Truth About Traditional Javascript Benchmarks: <a target="_blank" rel="noopener" href="https://benediktmeurer.de/2016/12/16/the-truth-about-traditional-javascript-benchmarks/">https://benediktmeurer.de/2016/12/16/the-truth-about-traditional-javascript-benchmarks/</a></li>
+<li>V8 Development Blog: <a target="_blank" rel="noopener" href="https://v8.dev/">https://v8.dev/</a></li>
+<li>Lithium C++ Framework: <a target="_blank" rel="noopener" href="https://github.com/matt-42/lithium">https://github.com/matt-42/lithium</a></li>
+<li>Ntex Rust Framework: <a target="_blank" rel="noopener" href="https://github.com/ntex-rs/ntex">https://github.com/ntex-rs/ntex</a></li>
+<li>Asp.Net: <a target="_blank" rel="noopener" href="https://github.com/aspnet">https://github.com/aspnet</a></li>
+<li>Jooby Java/Kotlin Framework: <a target="_blank" rel="noopener" href="https://jooby.io/">https://jooby.io/</a></li>
+<li>Fiber Go Framework: <a target="_blank" rel="noopener" href="https://github.com/gofiber/fiber">https://github.com/gofiber/fiber</a></li>
+<li>Polkadot Node.js Framework: <a target="_blank" rel="noopener" href="https://github.com/lukeed/polkadot">https://github.com/lukeed/polkadot</a></li>
+<li>ES4X Javascript/Vert.x Framework: <a target="_blank" rel="noopener" href="https://github.com/reactiverse/es4x">https://github.com/reactiverse/es4x</a></li>
+<li>Fastify Node.js Framework: <a target="_blank" rel="noopener" href="https://www.fastify.io/">https://www.fastify.io/</a></li>
+<li>Postgres Pipeline Patch: <a target="_blank" rel="noopener" href="https://www.postgresql.org/message-id/attachment/112272/v18-0001-libpq-batch-support.patch">https://www.postgresql.org/message-id/attachment/112272/v18-0001-libpq-batch-support.patch</a></li>
+<li>Postgres Protocol Message Formats: <a target="_blank" rel="noopener" href="https://www.postgresql.org/docs/current/protocol-message-formats.html">https://www.postgresql.org/docs/current/protocol-message-formats.html</a></li>
+<li>PicoHTTPParser: <a target="_blank" rel="noopener" href="https://github.com/h2o/picohttpparser">https://github.com/h2o/picohttpparser</a></li>
+<li>Equinix Metal (formerly Packet): <a target="_blank" rel="noopener" href="https://www.packet.com/">https://www.packet.com/</a></li>
+<li>Stack Benchmarking Dos and Don'ts: <a target="_blank" rel="noopener" href="http://highscalability.com/blog/2016/4/13/10-stack-benchmarking-dos-and-donts.html">http://highscalability.com/blog/2016/4/13/10-stack-benchmarking-dos-and-donts.html</a></li>
+</ul>
 </div>
 <p class="social">
-  <a href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="On Javascript Performance, 1. Establishing a Baseline" data-url="https://just.billywhizz.io/blog/on-javascript-performance-1/" data-via="justjs14" data-hashtags="javascript" data-show-count="true"></a>
+  <a target="_blank" rel="noopener" href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="On Javascript Performance, 1. Techempower Rankings" data-url="https://just.billywhizz.io/blog/on-javascript-performance-1/" data-via="justjs14" data-hashtags="javascript" data-show-count="true"></a>
   <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 </p>
+<a name="comments" class="anchor"></a>
 <div class="comment">
 <script src="https://utteranc.es/client.js" repo="just-js/just.billywhizz.io" issue-term="pathname" label="blog.comment" theme="github-light" crossorigin="anonymous" async></script>  
 </div>
 </div>
+<script src="/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 </body>
 </html>
