@@ -31,7 +31,7 @@
 <meta name="twitter:description" content="A summary of techempower benchmark results for a new Javascript platform" />
 <meta name="twitter:title" content="On Javascript Performance - Techempower Ranking" />
 <meta name="twitter:site" content="@justjs14" />
-<meta name="twitter:image" content="https://just.billywhizz.io/blog/on-javascript-performance-1/header.png" />
+<meta name="twitter:image" content="https://just.billywhizz.io/blog/on-javascript-performance-01/header.png" />
 <meta name="twitter:creator" content="@billywhizz1970" />
 <meta name="twitter:image:alt" content="graph of composite scores for a range of frameworks on techempower" />
 </head>
@@ -108,8 +108,8 @@ Detail of Initial Local Tests
 </p>
 <p>I wasn't too disappointed by that but still had plenty of room for optimizations and had a strong feeling that big improvements could be made, so I set to work.</p>
 <h3>Postgres API</h3>
-<p>My initial attempt was using a <a target="_blank" rel="noopener" href="https://github.com/just-js/modules/tree/main/pg">C++ module</a> interfacing with the official <a target="_blank" rel="noopener" href="https://www.postgresql.org/docs/current/libpq.html">libpq</a> c api. I did a lot of testing and traffic analysis against this and came up against bottlenecks I could not explain so decided to abandon it and try to write a Javascript library to interface with Postgres instead. I later discovered (by examining the source code of the other frameworks) that there is <a target="_blank" rel="noopener" href="https://www.postgresql.org/message-id/attachment/112272/v18-0001-libpq-batch-support.patch">a patchset</a> for libpq which resolves these issues so I may revisit the C++ binding in the future.</p>
-<p>After a number of days poring over the postgres docs and testing, I was happy with the surprisingly good results I was seeing from the <a target="_blank" rel="noopener" href="https://github.com/just-js/techempower/blob/main/lib/pg.js">Javascript code</a> i put together. I had to work hard to ensure I was doing as few heap allocations as possible and worked in various optimizations like being able to <a target="_blank" rel="noopener" href="https://github.com/just-js/techempower/blob/main/lib/connection.js#L138">pre-compile</a> the queries into ArrayBuffers and using prepared statements in Postgres, which is much faster than doing raw Sql queries.</p>
+<p>My initial attempt was using a <a target="_blank" rel="noopener" href="https://github.com/just-js/modules/tree/0.0.5/pg">C++ module</a> interfacing with the official <a target="_blank" rel="noopener" href="https://www.postgresql.org/docs/current/libpq.html">libpq</a> c api. I did a lot of testing and traffic analysis against this and came up against bottlenecks I could not explain so decided to abandon it and try to write a Javascript library to interface with Postgres instead. I later discovered (by examining the source code of the other frameworks) that there is <a target="_blank" rel="noopener" href="https://www.postgresql.org/message-id/attachment/112272/v18-0001-libpq-batch-support.patch">a patchset</a> for libpq which resolves these issues so I may revisit the C++ binding in the future.</p>
+<p>After a number of days poring over the postgres docs and testing, I was happy with the surprisingly good results I was seeing from the <a target="_blank" rel="noopener" href="https://github.com/just-js/techempower/blob/0.0.5/lib/pg.js">Javascript code</a> i put together. I had to work hard to ensure I was doing as few heap allocations as possible and worked in various optimizations like being able to <a target="_blank" rel="noopener" href="https://github.com/just-js/techempower/blob/0.0.5/lib/connection.js#L138">pre-compile</a> the queries into ArrayBuffers and using prepared statements in Postgres, which is much faster than doing raw Sql queries.</p>
 <p>Here is a little snippet of How the pre-compiled queries work:</p>
 <pre class="code">
 <code class="javascript">
@@ -139,14 +139,13 @@ allFortunes.call(() => {
 <h3>Micro Optimisations</h3>
 <p>I also added some further optimizations which allowed me to squeeze out a few more drops of performance:</p>
 <ul>
-<li>I am <a target="_blank" rel="noopener" href="https://github.com/just-js/modules/blob/main/picohttp/http.cc">using</a> <a target="_blank" rel="noopener" href="https://github.com/h2o/picohttpparser">picohttpparser</a> which takes advantage of SSE4 instructions for blazing fast http parsing.</li>
+<li>I am <a target="_blank" rel="noopener" href="https://github.com/just-js/modules/blob/0.0.5/picohttp/http.cc">using</a> <a target="_blank" rel="noopener" href="https://github.com/h2o/picohttpparser">picohttpparser</a> which takes advantage of SSE4 instructions for blazing fast http parsing.</li>
 <li>Using <a target="_blank" rel="noopener" href="https://github.com/lucagez/slow-json-stringify">slow-json-stringify</a> instead of native JSON.stringify made a small but noticeable difference across the board.</li>
-<li>Doing the HTML escaping <a target="_blank" rel="noopener" href="https://github.com/just-js/techempower/blob/main/lib/connection.js#L238">at the same time</a> as reading the strings from the ArrayBuffers coming back from Postgres made quite a difference in the Fortunes test. Strings are allocated on the v8 heap and if they are short lived they have to be garbage collected which hurts performance quite a lot. I admit escaping the string at the database driver level is a little bit of a cheat so I will likely revisit this when I have some time.</li>
-<li>I noticed that other frameworks were using single queries to do the updates rather than a query for each update and adopted this approach too. You can see what it looks like <a target="_blank" rel="noopener" href="https://github.com/just-js/techempower/blob/main/techempower.js#L45">here</a>.</li>
-<li>I was unable to find a fast enough html templating library for the Fortunes test so need to do some further work to come up with an optimal solution for that. For now, the html is <a target="_blank" rel="noopener" href="https://github.com/just-js/techempower/blob/main/techempower.js#L175">being built manually</a> which is again a little bit of a cheat, but I am confident I can find something that works and provides equivalent performance.</li>
-<li>Because the results for the Fortunes test are small I found a simple <a target="_blank" rel="noopener" href="https://github.com/just-js/techempower/blob/main/techempower.js#L188">insertion sort</a> was quicker than the out of the box Array.sort in Javascript/v8.</li>
+<li>Doing the HTML escaping <a target="_blank" rel="noopener" href="https://github.com/just-js/techempower/blob/0.0.5/lib/connection.js#L238">at the same time</a> as reading the strings from the ArrayBuffers coming back from Postgres made quite a difference in the Fortunes test. Strings are allocated on the v8 heap and if they are short lived they have to be garbage collected which hurts performance quite a lot. I admit escaping the string at the database driver level is a little bit of a cheat so I will likely revisit this when I have some time.</li>
+<li>I noticed that other frameworks were using single queries to do the updates rather than a query for each update and adopted this approach too. You can see what it looks like <a target="_blank" rel="noopener" href="https://github.com/just-js/techempower/blob/0.0.5/techempower.js#L45">here</a>.</li>
+<li>I was unable to find a fast enough html templating library for the Fortunes test so need to do some further work to come up with an optimal solution for that. For now, the html is <a target="_blank" rel="noopener" href="https://github.com/just-js/techempower/blob/0.0.5/techempower.js#L175">being built manually</a> which is again a little bit of a cheat, but I am confident I can find something that works and provides equivalent performance.</li>
+<li>Because the results for the Fortunes test are small I found a simple <a target="_blank" rel="noopener" href="https://github.com/just-js/techempower/blob/0.0.5/techempower.js#L188">insertion sort</a> was quicker than the out of the box Array.sort in Javascript/v8.</li>
 </ul>
-<p>// TODO - update all the links to a specific release</p>
 <h2>Techempower Environment</h2>
 <p>Techempower run <a target="_blank" rel="noopener" href="https://www.techempower.com/benchmarks/#section=environment">the tests</a> on 3 Dell R440 servers each of which has an Intel Xeon Gold 5120 CPU with 28 threads and a dedicated Cisco 10Gbps ethernet adaptor.</p>
 <p>The framework being tested runs on one machine, the database on another and the benchmarking tool (which uses wrk) runs on the third. Everything runs inside of docker using Host networking so the overhead from that should be minimal.</p>
@@ -309,7 +308,7 @@ Detailed Updates Results
 </ul>
 </div>
 <p class="social">
-  <a target="_blank" rel="noopener" href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="On Javascript Performance, 1. Techempower Rankings" data-url="https://just.billywhizz.io/blog/on-javascript-performance-1/" data-via="justjs14" data-hashtags="javascript" data-show-count="true"></a>
+  <a target="_blank" rel="noopener" href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="On Javascript Performance, 1. Techempower Rankings" data-url="https://just.billywhizz.io/blog/on-javascript-performance-01/" data-via="justjs14" data-hashtags="javascript" data-show-count="true"></a>
   <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 </p>
 <a name="comments" class="anchor"></a>

@@ -10,10 +10,12 @@ just javascript
 official blog of just-js project
 </description>
 <item>
-<guid>http://just.billywhizz.io/blog/on-javascript-performance-1/</guid>
+<guid>http://just.billywhizz.io/blog/on-javascript-performance-01/</guid>
 <title>On Javascript Performance: Part 1 - Techempower Rankings</title>
-<description></description>
-<link>http://just.billywhizz.io/blog/on-javascript-performance-1/</link>
+<description>
+This was a question that was recently asked on github, prompted by the arrival of a new javascript platform near the summit of the intermediate techempower rankings. This platform, Just(js), is something I have been hacking on as a side-project for quite some time. Here I will attempt to give a brief answer to the question and will be following up with some further detail on this and the platform itself over the coming weeks...
+</description>
+<link>http://just.billywhizz.io/blog/on-javascript-performance-01/</link>
 <pubDate>Sun, 25 Oct 2020 15:00:00 +0100</pubDate>
 </item>
 </channel>
