@@ -74,7 +74,7 @@
 </ul>
 <h2>Just Show Me The Results Already!</h2>
 <p>Okay, Okay! Here are the top 10 frameworks from the latest techempower intermediate run. Please read the <a href="#caveats">caveats</a> to understand why these results should be taken with a little skepticism for now.</p>
-<p><a href="header.png"><img class="inline" src="header.png" alt="Intermediate Results Top 10"></a></p>
+<p><a href="header.png"><img width="605" height="340" class="inline" src="header.png" alt="Intermediate Results Top 10"></a></p>
 <p class="subimage">
 Intermediate Results Top 10
 </p>
@@ -88,7 +88,7 @@ Intermediate Results Top 10
 <li>Just(js) scores 40% higher than the best performing <a target="_blank" rel="noopener" href="https://github.com/gofiber/fiber">Go framework</a>.</li>
 </ul>
 <p>When comparing to other Javascript frameworks the difference becomes quite stark.</p>
-<p><a href="js-frameworks.png"><img class="inline" src="js-frameworks.png" alt="Intermediate Results Javascript Frameworks"></a></p>
+<p><a href="js-frameworks.png"><img width="1132" height="218" class="inline" src="js-frameworks.png" alt="Intermediate Results Javascript Frameworks"></a></p>
 <p class="subimage">
 Results for Javascript Frameworks
 </p>
@@ -98,12 +98,12 @@ Results for Javascript Frameworks
 </ul>
 <h2>How Does Just(js) Achieve These Scores?</h2>
 <p>Well, it was <em>a lot</em> of hard work. My initial attempts, which I benchmarked on my laptop against the best C++, Rust and Javascript frameworks were so-so.</p>
-<p><a href="initial.png"><img class="inline" src="initial.png" alt="Initial Tests"></a></p>
+<p><a href="initial.png"><img width="562" height="331" class="inline" src="initial.png" alt="Initial Tests"></a></p>
 <p class="subimage">
 Results of Inital Local Tests
 </p>
 <p>I was only seeing 50% of the best performers, with particularly bad scores for the multi-query, update and fortunes tests, which are the most relevant ones to real-world scenarios.</p>
-<p><a href="initial-detail.png"><img class="inline" src="initial-detail.png" alt="Initial Tests Detail"></a></p>
+<p><a href="initial-detail.png"><img width="944" height="123" class="inline" src="initial-detail.png" alt="Initial Tests Detail"></a></p>
 <p class="subimage">
 Detail of Initial Local Tests
 </p>
@@ -152,14 +152,14 @@ allFortunes.call(() => {
 <p>The framework being tested runs on one machine, the database on another and the benchmarking tool (which uses <a target="_blank" rel="noopener" href="https://github.com/wg/wrk">wrk</a>) runs on the third. Everything runs inside of docker using Host networking so the overhead from that should be minimal.</p>
 <h2>Initial Submission</h2>
 <p>Having done all this work, I was now seeing Just(js) match the top performing frameworks on my local tests so was reasonably confident I could score well in the production techempower environment.</p>
-<p><a href="local-final.png"><img class="inline" src="local-final.png" alt="Final Results of Local Tests"></a></p>
+<p><a href="local-final.png"><img class="inline" width="543" height="314" src="local-final.png" alt="Final Results of Local Tests"></a></p>
 <p class="subimage">
 Final Results of Local Tests
 </p>
 <p>I submitted my pull request, had it reviewed and accepted and then waited anxiously while the techempower servers churned through the tests. The total run takes about 5 days each time so I was hugely disappointed when my initial submission failed on the production run. This was down to DNS working differently in the production environment than it does in techempower's CI system and my code not handling this correctly.</p>
 <p>I made <a target="_blank" rel="noopener" href="https://github.com/TechEmpower/FrameworkBenchmarks/pull/5998/files#diff-8ea032b8acd0d08eacd31ec942cbde8316c4f868c29551ef758f3a889f5df23a">some changes</a> to the dns code to use /etc/resolv.conf and /etc/hosts to determine the IP address of the database once I realised the production environment was using the <b>--add-host</b> docker option to inject the database IP address into the container /etc/hosts file.</p>
 <p>Thankfully, after some more anxious waiting, the tests were successful next time around but I was a little disappointed to see Just(js) had only <a target="_blank" rel="noopener" href="https://www.techempower.com/benchmarks/#section=test&amp;runid=8ee18501-8947-4847-9449-f8b5dde1ba2d&amp;hw=ph&amp;test=composite&amp;a=2">placed 5th</a> overall, scoring roughly 70% of the best performing framework.</p>
-<p><a href="techempower-first.png"><img class="inline" src="techempower-first.png" alt="Initial Techempower Result"></a></p>
+<p><a href="techempower-first.png"><img width="1084" height="131" class="inline" src="techempower-first.png" alt="Initial Techempower Result"></a></p>
 <p class="subimage">
 Results of Initial Run on Techempower
 </p>
@@ -169,16 +169,16 @@ Results of Initial Run on Techempower
 <p>At this point, I was really scratching my head as to what I could do but while testing on the packet server I noticed that the issue got worse the more threads I used. The initial submission was <a target="_blank" rel="noopener" href="https://github.com/TechEmpower/FrameworkBenchmarks/commit/235140573723c17c1166368c4fdc591c2ddca46d#diff-356f4e29a849192441ffde985db508902ac02f1d110c75110fefe083140163c9">spawning a thread</a> for each server instance so I decided to try using processes instead of threads.</p>
 <p>This turned out to be the breakthrough I was hoping for and I saw a huge improvement on the packet server over the threaded approach. I am still not too sure why this is but my guess would be the v8 heap and/or GC are shared across the threads when using a thread for each v8 Isolate which means lots of contention on those mutexes reading from the ArrayBuffers.</p>
 <p>After submitting my changes the <a target="_blank" rel="noopener" href="https://www.techempower.com/benchmarks/#section=test&amp;runid=9716e3cd-9e53-433c-b6c5-d2c48c9593c1&amp;hw=ph&amp;test=composite&amp;a=2">next Techempower run</a> showed a huge improvement. Just(js) was now placing 2nd overall and within 5% of the top performing framework, and has maintained its position on subsequent runs.</p>
-<p><a href="techempower-second.png"><img class="inline" src="techempower-second.png" alt="Improved Techempower Result"></a></p>
+<p><a href="techempower-second.png"><img width="1085" height="128" class="inline" src="techempower-second.png" alt="Improved Techempower Result"></a></p>
 <p class="subimage">
 Improved Techempower Results
 </p>
 <p>You can see the huge reduction in syscall overhead in these two graphs for the multi query test:</p>
-<a href="syscall-overhead.png"><img class="inline" src="syscall-overhead.png" alt="Sycall Overhead"></a></p>
+<a href="syscall-overhead.png"><img width="1099" height="205" class="inline" src="syscall-overhead.png" alt="Sycall Overhead"></a></p>
 <p class="subimage">
 Syscall Overhead in Initial Results
 </p>
-<a href="syscall-overhead-fixed.png"><img class="inline" src="syscall-overhead-fixed.png" alt="Sycall Overhead Fixed"></a></p>
+<a href="syscall-overhead-fixed.png"><img width="1097" height="207" class="inline" src="syscall-overhead-fixed.png" alt="Sycall Overhead Fixed"></a></p>
 <p class="subimage">
 Improved Results after Switch from Threads to Processes
 </p>
@@ -199,7 +199,7 @@ Improved Results after Switch from Threads to Processes
 <p>You can read more on the test requirements <a target="_blank" rel="noopener" href="https://github.com/TechEmpower/FrameworkBenchmarks/wiki/Project-Information-Framework-Tests-Overview">here</a>.</p>
 <h3>Plaintext</h3>
 <p>The plaintext test is the simplest and probably the least useful one but it does give us some idea of raw performance of the HTTP parser, event loop and network apis. The results for this also come with a large caveat that the top performing frameworks all score around the same. This is because the 10Gbps network is saturated at 7m requests per second.</p>
-<p><a href="plaintext.png"><img class="inline" src="plaintext.png" alt="Plaintext Detailed Results"></a></p>
+<p><a href="plaintext.png"><img width="1170" height="485" class="inline" src="plaintext.png" alt="Plaintext Detailed Results"></a></p>
 <p class="subimage">
 Detailed Plaintext Results
 </p>
@@ -210,7 +210,7 @@ Detailed Plaintext Results
 <p>I'm surprised Go and Java score as low as they do on this test so there may be some room for improvement in the benchmark implementations for those languages. I would also imagine there could be some optimisations made to the Node.js and PHP implementations.</p>
 <h3>JSON</h3>
 <p>The JSON test is a little more real-world than plaintext and gives us some idea of relative performance of JSON serialization across the tested frameworks.</p>
-<p><a href="json.png"><img class="inline" src="json.png" alt="JSON Detailed Results"></a></p>
+<p><a href="json.png"><img width="1172" height="486" class="inline" src="json.png" alt="JSON Detailed Results"></a></p>
 <p class="subimage">
 Detailed JSON Results
 </p>
@@ -218,7 +218,7 @@ Detailed JSON Results
 <p>For RPS/Thread, Just(js) scores 9% below the best C++ framework here, 2% above the best Rust framework, 5% above the best Java framework, 20% above the best Go and PHP frameworks, 25% above the best C# framework, 41% above Javascript/Vert.x and 64% above Node.js.</p>
 <h3>Single Query</h3>
 <p>This test is the first one involving a database and runs one query per request, serialising the results to JSON.</p>
-<p><a href="single.png"><img class="inline" src="single.png" alt="Single Query Detailed Results"></a></p>
+<p><a href="single.png"><img width="1103" height="542" class="inline" src="single.png" alt="Single Query Detailed Results"></a></p>
 <p class="subimage">
 Detailed Single Query Results
 </p>
@@ -227,7 +227,7 @@ Detailed Single Query Results
 <p>You can also notice that many of the frameworks, including Just(js), are not maxing out on CPU here. In the best performers this is likely down to the database being maxed out but again it is not possible to determine this as we don't get that data from the techempower datasets. For the lower-scoring frameworks it is likely due to latency introduced by the libpq drivers being used to communicate with Postgres.</p>
 <h3>Fortunes</h3>
 <p>The Fortunes test is probably the most realistic one and involves selecting a number of rows from the database, inserting a new row into the resultset dynamically and then sorting and html escaping the results before serialising to JSON.</p>
-<p><a href="fortunes.png"><img class="inline" src="fortunes.png" alt="Fortunes Detailed Results"></a></p>
+<p><a href="fortunes.png"><img width="1105" height="538" class="inline" src="fortunes.png" alt="Fortunes Detailed Results"></a></p>
 <p class="subimage">
 Detailed Fortunes Results
 </p>
@@ -236,7 +236,7 @@ Detailed Fortunes Results
 <p>Again, it looks like a number of frameworks here (Lithium and Wizardo-Http in particular) are hitting a bottleneck. It is not possible to determine at the moment what this is but it is unlikely to be the database and more likely something internal to the postgres client libraries being used.</p>
 <h3>Multiple Queries</h3>
 <p>The multi-query test requires frameworks to retrieve 20 randomly selected rows from the database as 20 individual queries, coalesce the results and serialise them to JSON.</p>
-<p><a href="multi.png"><img class="inline" src="multi.png" alt="Multiple Queries Detailed Results"></a></p>
+<p><a href="multi.png"><img width="1100" height="543" class="inline" src="multi.png" alt="Multiple Queries Detailed Results"></a></p>
 <p class="subimage">
 Detailed Multi-Query Results
 </p>
@@ -247,7 +247,7 @@ Detailed Multi-Query Results
 <p>Those are some pretty astounding numbers!</p>
 <h3>Updates</h3>
 <p>The updates test requires retrieving 20 randomly selected rows from the database as 20 individual queries and then updating each of those rows with a new random value. Techempower allow batching of the updates but not the queries and Just(js) takes advantage of this.</p>
-<p><a href="update.png"><img class="inline" src="update.png" alt="Updates Detailed Results"></a></p>
+<p><a href="update.png"><img width="1102" height="515" class="inline" src="update.png" alt="Updates Detailed Results"></a></p>
 <p class="subimage">
 Detailed Updates Results
 </p>

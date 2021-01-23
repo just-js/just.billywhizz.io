@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Just(js): On Javascript Performance</title>
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-1371855-5"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-1371855-5');
+</script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="description" content="A review of Javascript performance. Part 2 - Performance Means More Than Just Speed." />
+<link href="/index.css" rel="stylesheet" />
+<link href="/vs.min.css" media="screen" rel="stylesheet" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="apple-mobile-web-app-title" content="just.js" />
+<meta name="application-name" content="just.js" />
+<meta name="msapplication-TileColor" content="#da532c" />
+<meta name="theme-color" content="#ffffff" />
+<link rel="alternate" type="application/rss+xml" title="RSS Feed for just.js javascript framework" href="/blog/index.xml" />
+<meta charset="UTF-8" />
+<meta name="keywords" content="JavaScript,Performance,IO,Speed" />
+<meta name="author" content="Andrew Johnston" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:description" content="An investigation into Javascript pipe performance" />
+<meta name="twitter:title" content="On Javascript Performance - Performance Means More Than Just Speed" />
+<meta name="twitter:site" content="@justjs14" />
+<meta name="twitter:image" content="https://just.billywhizz.io/blog/on-javascript-performance-02/header.png" />
+<meta name="twitter:image:src" content="https://just.billywhizz.io/blog/on-javascript-performance-02/header.png" />
+<meta name="twitter:creator" content="@billywhizz1970" />
+<meta name="twitter:image:alt" content="graph of scores of piping stdin on Just(js), Node.js and plain C" />
+</head>
+<body>
+<div class="container">
+<div class="header">
+<img src="header.png" alt="graph of scores of piping stdin on Just(js), Node.js and plain C" />
+<hgroup>
+<h1 class="series">On Javascript Performance</h1>
+<h3 class="ts">01 November 2020</h3>
+<h2 class="hl"><a class="headline" href="on-javascript-performance-02">2. Performance Means More Than Just Speed</a></h2>
+<h3 class="by">by <a class="author" target="_blank" rel="noopener" href="https://billywhizz.io">billywhizz</a></h3>
+</hgroup>
+</div>
+<div class="article">
+
+instructions:
+
+https://github.com/just-js/just/blob/main/VSCode.md
+
+node 14.3.0
+
+dd if=/dev/zero bs=65536 count=500000 | node wc-node.js
+
+Intel(R) Core(TM) i5-8250U CPU @ 1.60GHz
+
+
+<h2>A Simple Test</h2>
+<p class="first">
+This is a little introduction to Just(js) with a small example program we can dissect and do some benchmarking on. It will hopefully shed some light on the design of the platform and how it can be a good choice for systems programming in Javascript without trading in much on performance over the lowest level languages out there.
+</p>
+<h2>The Challenge</h2>
+<p>We are going to write a very small and simple program which will read all the bytes piped into it over stdin and count the total number of bytes it saw. This is similar to "wc -c" program option available on many platforms.</p>
+<p>The requirements are:</p>
+<ul>
+<li>Read all bytes from stdin and print out the total number of bytes piped</li>
+<li>Handle any errors that occur</li>
+<li>Compare performance of native "wc -c" on Ubuntu 18.04, A minimal implementation in C, Just(s) Sync and Async implementations and a standard Node.js implementation as well as one using the lower level Node.js C++ bindings.</li>
+</ul>
+<p>We will use dd to pipe from /dev/zero in 64k blocks. 64k blocks gets us peak throughput in my environment but I show some results for other block sizes below.</p>
+<code class="bash">
+dd if=/dev/zero bs=65536 count=500000 | wc -c
+</code>
+<h2>The Environment</h2>
+<p>I am running this on my laptop which has an Intel Core i5-8250I cpu @ 1.6GHz. We are reading from /dev/zero so most of the time will be spent in syscalls/the kernel. We should be able to get a good picture from this of how much userspace overhead each test adds.</p>
+
+<h2>The Results</h2>
+<p>I always like to start with the results so here they are</p>
+
+<p><a href="stdin-perf.png"><img class="inline" src="stdin-perf.png" alt="Stdin Byte Count Performance Results"></a></p>
+<p class="subimage">
+Total Time and Overhead for Reading Stdin in 64k chunks
+</p>
+
+dd if=/dev/zero bs=65536 count=500000 | time -f "%U user\t%S sys\t%M rss\ti: %c v: %w ctx" node wc-node.js
+
+Let's imagine we are building a byte counting service. we will pipe some input (maybe some huge files we need to know the size of)
+
+the cpu is becoming the bottleneck. in the past we could pretty much assume the reading from the medium would be slower than the processing by the cpu but now in the real world we are hitting those limits.
+
+node.js
+
+process.stdin
+https://nodejs.org/dist/latest-v14.x/docs/api/process.html#process_process_stdin
+
+readable.read
+https://nodejs.org/dist/latest-v14.x/docs/api/stream.html#stream_readable_read_size
+
+
+
+
+
+https://github.com/just-js/just/blob/main/VSCode.md
+
+
+make clean runtime-builder install
+sudo apt update && sudo apt install -y gcc time
+wget -qO- https://raw.githubusercontent.com/nvm-sh/nvm/v0.36.0/install.sh | bash
+nvm install 12
+nvm install 14
+nvm install 15
+make examples
+cd examples/pipes
+gcc -O3 -o wc wc.c
+
+dd if=/dev/zero bs=65536 count=500000 | time -f "%U user\t%S sys\t%M rss\ti: %c v: %w ctx" node ./wc
+dd if=/dev/zero bs=65536 count=500000 | time -f "%U user\t%S sys\t%M rss\ti: %c v: %w ctx" node just wc.js
+dd if=/dev/zero bs=65536 count=500000 | time -f "%U user\t%S sys\t%M rss\ti: %c v: %w ctx" node just wc-async.js
+nvm use 12
+dd if=/dev/zero bs=65536 count=500000 | time -f "%U user\t%S sys\t%M rss\ti: %c v: %w ctx" node node wc-node.js
+dd if=/dev/zero bs=65536 count=500000 | time -f "%U user\t%S sys\t%M rss\ti: %c v: %w ctx" node node wc-node-fast.js
+nvm use 14
+nvm use 15
+
+
+<h2>The Results</h2>
+
+
+<pre class="code">
+<code class="javascript">
+sock.allFortunes = await compile(sock, {
+  formats: [],
+  sql: 'select * from Fortune',
+  fields: [{ format: 1, oid: INT4OID }, { format: 0, oid: VARCHAROID }],
+  name: 's2',
+  portal: '',
+  maxRows: 0,
+  htmlEscape: true,
+  params: []
+})
+</code>
+</pre>
+<h2>References</h2>
+<ol>
+<li>Just(js) Javascript Platform: <a target="_blank" rel="noopener" href="https://github.com/just-js">https://github.com/just-js</a></li>
+</ol>
+
+
+</div>
+<p class="social">
+  <a target="_blank" rel="noopener" href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="On Javascript Performance, 2. Performance Means More Than Just Speed" data-url="https://just.billywhizz.io/blog/on-javascript-performance-02/" data-via="justjs14" data-hashtags="javascript" data-show-count="true"></a>
+  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+</p>
+<a name="comments" class="anchor"></a>
+<div class="comment">
+<script src="https://utteranc.es/client.js" repo="just-js/just.billywhizz.io" issue-term="pathname" label="blog.comment" theme="github-light" crossorigin="anonymous" async></script>  
+</div>
+</div>
+<script src="/highlight.min.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+</body>
+</html>
