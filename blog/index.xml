@@ -23,7 +23,7 @@ This was a question that was recently asked on github, prompted by the arrival o
 <guid>http://just.billywhizz.io/blog/on-javascript-performance-02/</guid>
 <title>On Javascript Performance: Part 2 - Syscall Overhead in Javascript</title>
 <description>
-The goal of this demo is to establish the overhead of making syscalls in <a href="https://github.com/just-js">just(js)</a> runtime for Javascript. We will write a simple console application which counts the number of bytes piped to it over stdin. The application will call the read syscall repeatedly in various chunk sizes.
+The goal of this demo is to establish the overhead of making syscalls in the just(js) runtime for Javascript. We will write a simple console application which counts the number of bytes piped to it over stdin. The application will call the read syscall repeatedly in various chunk sizes.
 </description>
 <link>http://just.billywhizz.io/blog/on-javascript-performance-02/</link>
 <pubDate>Fri, 19 Feb 2021 23:45:00 +0100</pubDate>
