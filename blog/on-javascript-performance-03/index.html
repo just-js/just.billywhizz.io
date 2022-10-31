@@ -142,7 +142,7 @@ docker build -t bench .
 </code></pre>
 <p>We run in privileged mode to ensure seccomp and other Linux security features won't interfere with performance. There are lots of other tweaks we could probably do, but it's not really worth it for this simple test - if you have any suggestions, please let me know in the comments.</p>
 <h1 id="investigations">Investigations</h1>
-<p>Let's do a quick run with hyperfine, comparing Bun to the <a href="https://github.com/billywhizz/spindle/blob/perf-test/Makefile#L91">full build</a> of spindle. The full version of spindle has a bunch of core modules for doing things like event loops, sockets, http parsing and some other basic functionality. This all gets bundled into the runtime and is available to JS on startup, so it's a reasonably fair comparison, even though functionality is much less than what Bun aims for. Note that none of the JS in spindle will be compiled for this test as the modules are never required and <a href="https://github.com/billywhizz/spindle/blob/perf-test/main.js">main.js</a> is standalone.</p>
+<p>Let's do a quick run with hyperfine, comparing Bun to the <a href="https://github.com/billywhizz/spindle/blob/perf-test/Makefile#L91">full build</a> of spindle. The full version of spindle has a bunch of core modules for doing things like event loops, sockets, http parsing and some other basic functionality. This all gets bundled into the runtime and is available to JS on startup, so it's a reasonably fair comparison, even though functionality is much less than what Bun aims for. Note that none of the JS modules in spindle will be compiled for this test as they are never loaded and <a href="https://github.com/billywhizz/spindle/blob/perf-test/main.js">main.js</a> is standalone.</p>
 <p>If you want to play around with it, you can build it from source if you are running on Linux. It <em>should</em> run on WSL2 if you want to try it there too - let me know if it does.</p>
 <p>Let's go ahead and run it already!</p>
 <pre><code class="bash language-bash">curl -L -o perf.tar.gz https://github.com/billywhizz/spindle/archive/refs/tags/perf.tar.gz
@@ -447,7 +447,7 @@ Summary
 <li>Static linking has a significant effect in a benchmark like this where we are running the same process repeatedly</li>
 <li>CPU pinning has a significant effect in a benchmark like this where we are running the same process repeatedly</li>
 </ul>
-<p>In general, benchmarking is a difficult, laborious process. it takes time to consider all the environmental issues, experiment with configurations, etc. Hopefully this little effort helps to highlight that and maybe we can start to take a lot of these micro-benchmarks we see bandied about the twitterverse with a little more skepticism going forward. Thanks for Listening!</p>
+<p>In general, benchmarking is a difficult, laborious process - it takes time to consider all the environmental issues, experiment with configurations, etc. Hopefully this little effort helps to highlight that and maybe we can start to treat a lot of these micro-benchmarks we see bandied about the twitterverse with a little more skepticism going forward. Thanks for Listening!</p>
 <h2 id="futureresearch">Future Research</h2>
 <ul>
 <li>Investigate time to bootstrap and time to bootstrap, execute and shutdown different JS runtimes inside a single process, without system overhead of spawning a process for each Isolate/VM</li>
