@@ -3,7 +3,7 @@
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url(https://fonts.gstatic.com/s/robotoslab/v12/BngbUXZYTXPIvIBgJJSb6s3BzlRRfKOFbvjojISmb2RjV9Ku1Q.woff2) format('woff2');
+  src: url(robotoslab12.woff2) format('woff2');
   unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
 }
 body {
@@ -65,13 +65,15 @@ p.subimage {
 p.social {
   padding-top: 8px;
   text-align: right;
+  margin: 0px;
+  padding: 0px;
 }
 div.utterances {
   margin-right: 0px;
 }
 div.header {
-  margin-left: -36px;
-  margin-right: -36px;
+  margin-left: -32px;
+  margin-right: -32px;
   background-color: #e0e0e0;
   padding-top: 32px;
   padding-left: 32px;
@@ -82,6 +84,7 @@ div.header {
 div.article {
   clear: both;
   padding-top: 16px;
+  width: 100%;
 }
 h1 {
   color: #404040;
@@ -100,6 +103,7 @@ h2 {
 div.header img {
   float: right;
   height: 140px;
+  width: 248px;
 }
 h2.hl {
   margin: 0;
@@ -143,7 +147,20 @@ pre.code {
   max-width: 80%;
   display: block;
   margin: 0 auto;
+  overflow: scroll;
 }
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+pre::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+pre {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
 @media print {
   div.utterances { display: none; }
   div.logo { display: none; }

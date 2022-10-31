@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Just(js): On Javascript Performance</title>
+<title>1. Techempower Rankings</title>
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-1371855-5"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -23,31 +23,32 @@
 <meta name="application-name" content="just.js" />
 <meta name="msapplication-TileColor" content="#da532c" />
 <meta name="theme-color" content="#ffffff" />
-<link rel="alternate" type="application/rss+xml" title="RSS Feed for just.js javascript framework" href="/blog/index.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS Feed for Weblog of just.js Javascript framework" href="/blog/index.xml" />
 <meta charset="UTF-8" />
 <meta name="keywords" content="JavaScript,Techempower,Benchmark,Performance" />
-<meta name="author" content="Andrew Johnston" />
+<meta name="author" content="billwhizz" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:description" content="A summary of techempower benchmark results for a new Javascript platform" />
-<meta name="twitter:title" content="On Javascript Performance - Techempower Ranking" />
+<meta name="twitter:title" content="On Javascript Performance1. Techempower Rankings" />
 <meta name="twitter:site" content="@justjs14" />
-<meta name="twitter:image" content="https://just.billywhizz.io/blog/on-javascript-performance-01/header.png" />
-<meta name="twitter:image:src" content="https://just.billywhizz.io/blog/on-javascript-performance-01/header.png" />
+<meta name="twitter:image" content="https://just.billywhizz.io/blog/blog/on-javascript-performance-01/header.png" />
+<meta name="twitter:image:src" content="https://just.billywhizz.io/blog/blog/on-javascript-performance-01/header.png" />
 <meta name="twitter:creator" content="@billywhizz1970" />
-<meta name="twitter:image:alt" content="graph of composite scores for a range of frameworks on techempower" />
+<meta name="twitter:image:alt" content="undefined" />
 </head>
 <body>
 <div class="container">
 <div class="header">
-<img src="header.png" alt="Intermediate Results Top 10" />
+<img width="248" height="140" src="header.png" alt="graph of composite scores for a range of frameworks on techempower" />
 <hgroup>
 <h3 class="ts">25 October 2020</h3>
 <h1 class="series">On Javascript Performance</h1>
 <h2 class="hl">1. Techempower Rankings</h2>
-<h3 class="by">by <a rel="noopener" class="author" target="_blank" rel="noopener" href="https://billywhizz.io">billywhizz</a></h3>
+<h3 class="by">by <a rel="noopener" class="author" target="_blank" rel="noopener" href="https://billywhizz.io">billwhizz</a></h3>
 </hgroup>
 </div>
-<div class="article">
+
+<div class="article editable">
 <h2>Why is Javascript in the top 2 of techempower?</h2>
 <p class="first">This question was recently <a target="_blank" rel="noopener" href="https://github.com/justjs/just/issues/5">asked</a> on github, prompted by the <a target="_blank" rel="noopener" href="https://www.techempower.com/benchmarks/#section=test&amp;runid=4389df09-c5d3-47fb-80a3-6ea787a9a895&amp;hw=ph&amp;test=composite&amp;a=2">arrival</a> of a new javascript platform near the summit of the intermediate <a target="_blank" rel="noopener" href="https://www.techempower.com/benchmarks/#section=intro">techempower</a> rankings. This platform, Just(js), is something I have been hacking on as a side-project for some time now. Here I will attempt to give a brief answer to the question and will be following up with some further detail on this and the platform itself over the coming weeks.</p>
 <p>If you find yourself getting hot under the collar reading this, please check the <a href="#caveats">caveats</a> below before going any further.</p>
@@ -133,7 +134,7 @@ const { allFortunes } = sock
 
 allFortunes.call(() => {
   const html = getHTML(insertionSort([extra, ...allFortunes.getRows()]))
-  sock.writeString(`${rHTML}${utf8Length(html)}${END}${html}`)
+  sock.writeString(&#96;&dollar;{rHTML}&dollar;{utf8Length(html)}&dollar;{END}&dollar;{html}&#96;)
 })
 </code>
 </pre>
@@ -305,10 +306,7 @@ Detailed Updates Results
 <li>Stack Benchmarking Dos and Don'ts: <a target="_blank" rel="noopener" href="http://highscalability.com/blog/2016/4/13/10-stack-benchmarking-dos-and-donts.html">http://highscalability.com/blog/2016/4/13/10-stack-benchmarking-dos-and-donts.html</a></li>
 </ol>
 </div>
-<p class="social">
-  <a target="_blank" rel="noopener" href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="On Javascript Performance, 1. Techempower Rankings" data-url="https://just.billywhizz.io/blog/on-javascript-performance-01/" data-via="justjs14" data-hashtags="javascript" data-show-count="true"></a>
-  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-</p>
+<div>
 <a name="comments" class="anchor"></a>
 <div class="comment">
 <script src="https://utteranc.es/client.js" repo="just-js/just.billywhizz.io" issue-term="pathname" label="blog.comment" theme="github-light" crossorigin="anonymous" async></script>  
@@ -316,5 +314,6 @@ Detailed Updates Results
 </div>
 <script src="/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
+</div>
 </body>
 </html>

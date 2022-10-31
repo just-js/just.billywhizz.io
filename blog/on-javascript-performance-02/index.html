@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Just(js): On Javascript Performance</title>
+<title>2. Syscall Overhead in Javascript</title>
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-1371855-5"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -23,49 +23,44 @@
 <meta name="application-name" content="just.js" />
 <meta name="msapplication-TileColor" content="#da532c" />
 <meta name="theme-color" content="#ffffff" />
-<link rel="alternate" type="application/rss+xml" title="RSS Feed for just.js javascript framework" href="/blog/index.xml" />
+<link rel="alternate" type="application/rss+xml" title="RSS Feed for Weblog of just.js Javascript framework" href="/blog/index.xml" />
 <meta charset="UTF-8" />
 <meta name="keywords" content="JavaScript,Performance,IO,Speed" />
-<meta name="author" content="Andrew Johnston" />
+<meta name="author" content="billwhizz" />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:description" content="An investigation into Javascript pipe performance" />
-<meta name="twitter:title" content="On Javascript Performance - Syscall Overhead in Javascript" />
+<meta name="twitter:title" content="On Javascript Performance2. Syscall Overhead in Javascript" />
 <meta name="twitter:site" content="@justjs14" />
-<meta name="twitter:image" content="https://just.billywhizz.io/blog/on-javascript-performance-02/throughput-mbps.png" />
-<meta name="twitter:image:src" content="https://just.billywhizz.io/blog/on-javascript-performance-02/throughput-mbps.png" />
+<meta name="twitter:image" content="https://just.billywhizz.io/blog/blog/on-javascript-performance-02/header.png" />
+<meta name="twitter:image:src" content="https://just.billywhizz.io/blog/blog/on-javascript-performance-02/header.png" />
 <meta name="twitter:creator" content="@billywhizz1970" />
-<meta name="twitter:image:alt" content="graph of scores of piping stdin on Just(js), Node.js and plain C" />
+<meta name="twitter:image:alt" content="undefined" />
 </head>
 <body>
 <div class="container">
 <div class="header">
-<img src="throughput-mbps.png" alt="graph of scores of piping stdin on Just(js), Node.js and plain C" />
+<img width="248" height="140" src="header.png" alt="graph of scores of piping stdin on Just(js), Node.js and plain C" />
 <hgroup>
-<h3 class="ts">17 February 2021</h3>
+<h3 class="ts">19 February 2021</h3>
 <h1 class="series">On Javascript Performance</h1>
 <h2 class="hl">2. Syscall Overhead in Javascript</h2>
-<h3 class="by">by <a class="author" target="_blank" rel="noopener" href="https://billywhizz.io">billywhizz</a></h3>
+<h3 class="by">by <a rel="noopener" class="author" target="_blank" rel="noopener" href="https://billywhizz.io">billwhizz</a></h3>
 </hgroup>
 </div>
-<div class="article">
 
-
+<div class="article editable">
 <h2>Measuring Syscall Overhead in Just(js)</h2>
 <p class="first">The goal of this demo is to establish the overhead of making syscalls in <a href="https://github.com/just-js">just(js)</a> runtime for Javascript. We will write a simple console application which counts the number of bytes piped to it over stdin. The application will call the read syscall repeatedly in various chunk sizes.</p>
 <p>We will implement the demo in C, in Javascript on just(js) using both sync and async interfaces. We will also write a comparison application on node.js to establish if there is any extra overhead on that platform.</p>
-
 <h2>Prerequisites</h2>
 <p>See <a href="https://gist.github.com/billywhizz/c8b13d66914f84745fbd9977ac72f7d4#file-readme-md">README.md</a> for initial setup. In order to run this test you will need linux <a href="https://man7.org/linux/man-pages/man1/strace.1.html">strace</a> and <a href="https://man7.org/linux/man-pages/man1/time.1.html">time</a> tools. These should be pre-installed if you run in the docker created in README.md.</p>
-
 <h2>Initial Investigation - Using 'wc'</h2>
 <p>First of all, let&#39;s see what performance we get from using the <a href="https://en.wikipedia.org/wiki/Wc_(Unix">wc</a>) tool that comes with most if not all unix-y systems. We will pipe 500k 64k chunks from /dev/zero into &#39;wc -c&#39; command to count the number of bytes.</p>
-
 <pre class="code">
 <code class="javascript">
 time dd if=/dev/zero bs=65536 count=500000 | wc -c
 </code>
 </pre>
-
 <p>Run it a few times to rule out any contention and we can see best performance on my setup of something like this</p>
 <pre class="code">
 <code class="javascript">
@@ -74,14 +69,11 @@ time dd if=/dev/zero bs=65536 count=500000 | wc -c
 real    0m8.212s
 </code>
 </pre>
-
 <p>So it takes 8.2 seconds in total and runs at a rate of 4 GB per second</p>
-
 <h2>Establishing a Baseline - Optimised C</h2>
 <p>We should be able to improve slightly on system wc if we write an optimised c version as the wc application does more than just count bytes and also likely does not have any processor specific optimisations that may help.</p>
 <p>Here is our little program. It shouldn&#39;t need any explantion.</p>
 <p><strong>wc.c</strong></p>
-
 <pre class="code">
 <code class="javascript">
 #include &lt;stdlib.h&gt;
@@ -170,10 +162,10 @@ while (n > 0) {
   n = read(STDIN_FILENO, buf)
 }
 if (n &lt; 0) {
-  error(`read: ${strerror(errno())} (${errno()})`)
+  error(&#96;read: &dollar;{strerror(errno())} (&dollar;{errno()})&#96;)
   exit(1)
 }
-print(`size ${size} reads ${reads} blocksize ${blocksize}`)
+print(&#96;size &dollar;{size} reads &dollar;{reads} blocksize &dollar;{blocksize}&#96;)
 </code>
 </pre>
 
@@ -259,12 +251,12 @@ let reads = 0
 function onData (fd) {
   const n = read(fd, buf)
   if (n &lt; 0) {
-    error(`read: ${strerror(errno())} (${errno()})`)
+    error(&#96;read: &dollar;{strerror(errno())} (&dollar;{errno()})&#96;)
     loop.remove(fd)
     just.exit(1)
   }
   if (n === 0) {
-    print(`size ${size} reads ${reads} blocksize ${blocksize} rss ${memoryUsage().rss}`)
+    print(&#96;size &dollar;{size} reads &dollar;{reads} blocksize &dollar;{blocksize} rss &dollar;{memoryUsage().rss}&#96;)
     loop.remove(fd)
     return
   }
@@ -345,10 +337,10 @@ while ((n = read(STDIN_FILENO, buf))) {
   size += n
 }
 if (n &lt; 0) {
-  just.error(`read: ${strerror(errno())} (${errno()})`)
+  just.error(&#96;read: &dollar;{strerror(errno())} (&dollar;{errno()})&#96;)
   just.exit(1)
 }
-just.print(`size ${size} reads ${reads} blocksize ${blocksize}`)
+just.print(&#96;size &dollar;{size} reads &dollar;{reads} blocksize &dollar;{blocksize}&#96;)
 </code>
 </pre>
 <p>Let&#39;s run a build with the --dump flag to see what kind of configuration this generates. We will also pass --clean and --static flags to tell it to clean up existing auto generated object files and to build a statically linked binary so we will have no runtime dependencies on system libraries. </p>
@@ -531,7 +523,7 @@ stdin.on('readable', () => {
   }
 })
 stdin.on('end', () => {
-  console.log(`size ${size} reads ${reads} blocksize ${blocksize}`)
+  console.log(&#96;size &dollar;{size} reads &dollar;{reads} blocksize &dollar;{blocksize}&#96;)
 })
 stdin.on('error', err => {
   console.error(err.stack)
@@ -568,7 +560,7 @@ let size = 0
 let reads = 0
 stdin.onread = buf => {
   if (!buf) {
-    console.log(`size ${size} reads ${reads} blocksize ${blocksize} rss ${process.memoryUsage().rss}`)
+    console.log(&#96;size &dollar;{size} reads &dollar;{reads} blocksize &dollar;{blocksize} rss &dollar;{process.memoryUsage().rss}&#96;)
     return
   }
   reads++
@@ -633,7 +625,7 @@ just analyse.js
 </code>
 </pre>
 <h3>Throughput in MBps</h3>
-<p><a href="throughput-mbps.png"><img width="1172" height="486" class="inline" src="throughput-mbps.png" alt="Throughput in MBps"></a></p>
+<p><a href="header.png"><img width="1172" height="486" class="inline" src="header.png" alt="Throughput in MBps"></a></p>
 <p>This shows the best performance over 10 runs for each program at the different chunk sizes. We can see pretty clearly there is no significant difference between the JS and c versions of the programs. In fact, we see slightly better performance from the JS programs with smaller chunk sizes.</p>
 <p>We can see here node.js throughput is approx. 30% lower than the c or just(js) programs.</p>
 <h3>Time Taken in Milliseconds</h3>
@@ -669,10 +661,7 @@ just analyse.js
 <li>Just(js) Github Issues: <a target="_blank" rel="noopener" href="https://github.com/just-js/just/issues">https://github.com/just-js/just/issues</a></li>
 </ol>
 </div>
-<p class="social">
-  <a target="_blank" rel="noopener" href="https://twitter.com/share?ref_src=twsrc%5Etfw" class="twitter-share-button" data-text="On Javascript Performance, 2. Syscall Overhead in Javascript" data-url="https://just.billywhizz.io/blog/on-javascript-performance-02/" data-via="justjs14" data-hashtags="javascript" data-show-count="true"></a>
-  <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
-</p>
+<div>
 <a name="comments" class="anchor"></a>
 <div class="comment">
 <script src="https://utteranc.es/client.js" repo="just-js/just.billywhizz.io" issue-term="pathname" label="blog.comment" theme="github-light" crossorigin="anonymous" async></script>  
@@ -680,5 +669,7 @@ just analyse.js
 </div>
 <script src="/highlight.min.js"></script>
 <script>hljs.initHighlightingOnLoad();</script>
+</div>
 </body>
 </html>
+

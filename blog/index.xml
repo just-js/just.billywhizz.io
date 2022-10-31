@@ -1,32 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 <channel>
-<link>https://just.billywhizz.io/blog</link>
-<atom:link href="https://just.billywhizz.io/blog/index.xml" rel="self" type="application/rss+xml" />
-<title>
-just javascript
-</title>
-<description>
-official blog of just-js project
-</description>
+<link>https://just.billywhizz.io/blog/</link>
+<atom:link href="https://just.billywhizz.io/blog//blog/index.xml" rel="self" type="application/rss+xml" />
+<title>just.js</title>
+<description>Weblog of just.js Javascript framework</description>
+
 <item>
-<guid>http://just.billywhizz.io/blog/on-javascript-performance-01/</guid>
-<title>On Javascript Performance: Part 1 - Techempower Rankings</title>
+<guid>https://just.billywhizz.io/blog/on-javascript-performance-03/</guid>
+<title>On Javascript Performance: 3. Command and Conquer</title>
 <description>
-This was a question that was recently asked on github, prompted by the arrival of a new javascript platform near the summit of the intermediate techempower rankings. This platform, Just(js), is something I have been hacking on as a side-project for quite some time. Here I will attempt to give a brief answer to the question and will be following up with some further detail on this and the platform itself over the coming weeks...
+An investigation into v8 based CLI application performance
 </description>
-<link>http://just.billywhizz.io/blog/on-javascript-performance-01/</link>
-<pubDate>Sun, 25 Oct 2020 15:00:00 +0100</pubDate>
+<link>https://just.billywhizz.io/blog/on-javascript-performance-03/</link>
+<pubDate>Mon, 31 Oct 2022 00:00:00 GMT</pubDate>
 </item>
 
 <item>
-<guid>http://just.billywhizz.io/blog/on-javascript-performance-02/</guid>
-<title>On Javascript Performance: Part 2 - Syscall Overhead in Javascript</title>
+<guid>https://just.billywhizz.io/blog/on-javascript-performance-02/</guid>
+<title>On Javascript Performance: 2. Syscall Overhead in Javascript</title>
 <description>
-The goal of this demo is to establish the overhead of making syscalls in the just(js) runtime for Javascript. We will write a simple console application which counts the number of bytes piped to it over stdin. The application will call the read syscall repeatedly in various chunk sizes.
+An investigation into Javascript pipe performance
 </description>
-<link>http://just.billywhizz.io/blog/on-javascript-performance-02/</link>
-<pubDate>Fri, 19 Feb 2021 23:45:00 +0100</pubDate>
+<link>https://just.billywhizz.io/blog/on-javascript-performance-02/</link>
+<pubDate>Fri, 19 Feb 2021 00:00:00 GMT</pubDate>
 </item>
+
+<item>
+<guid>https://just.billywhizz.io/blog/on-javascript-performance-01/</guid>
+<title>On Javascript Performance: 1. Techempower Rankings</title>
+<description>
+A summary of techempower benchmark results for a new Javascript platform
+</description>
+<link>https://just.billywhizz.io/blog/on-javascript-performance-01/</link>
+<pubDate>Sat, 24 Oct 2020 23:00:00 GMT</pubDate>
+</item>
+
 </channel>
 </rss>
