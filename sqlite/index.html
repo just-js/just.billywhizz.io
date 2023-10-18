@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge'>
+<title>QuilLS</title>
+<link rel="icon" type="image/png" href="data:image/png;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAA4f8AAAAAAP+EAAAAAP8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAERERERERERERESIiIiIREREREiIiIRERERERMzMRERESERMwAzERIRIhEzADMRIhEiEzAzAzEiESIzMzMzMyIRIjMzMzMzIhEiMzMzMzMiESIzADMAMyIRITMAMwAzEhERMzMzMzMRERERIiIiERERERIiIiIhERERERERERERH//wAA8A8AAPgfAAD8PwAAuB0AAJgZAACQCQAAgAEAAIABAACAAQAAgAEAAKAFAADgBwAA+B8AAPAPAAD//wAA" />
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    font-family: monospace;
+}
+html { visibility:hidden; }
+body {
+  background-color: #c0c0c0;
+}
+div#sql {
+  position: absolute;
+  left: 10px;
+  right: 320px;
+  top: 10px;
+  height: 260px;
+  overflow: auto;
+  background-color: #272822;
+}
+div#editor {
+  display: none;
+  width: 100%;
+  height: 100%;
+}
+pre#results {
+  position: absolute;
+  left: 10px;
+  right: 320px;
+  bottom: 10px;
+  top: calc(280px + 10pt + 4px + 10px);
+  background-color: #f0f0f0;
+  overflow: auto;
+}
+div#status {
+  position: absolute;
+  left: 10px;
+  right: 320px;
+  height: calc(10pt + 4px);
+  font-size: 10pt;
+  top: 280px;
+  padding-right: 10px;
+  padding-left: 10px;
+}
+div#wal {
+  position: absolute;
+  width: 300px;
+  right: 10px;
+  top: 10px;
+  bottom: 10px;
+  background-color: #f0f0f0;
+}
+span.label {
+  font-weight: bold;
+  width: 200px;
+}
+h2.logo {
+  text-align: right;
+  background-color: #a6cea3;
+  padding-top: 4px;
+  color: #313f30;
+  font-size: 24pt;
+  padding-right: 10px;
+  padding-left: 10px;
+}
+h3.sub {
+  text-align: right;
+  background-color: #a6cea3;
+  font-size: 9pt;
+  font-style: italic;
+  color: #5a6958;
+  padding-bottom: 16px;
+  border-bottom: 10px solid #5a6958;
+}
+td.header {
+  font-weight: bold;
+}
+table.walInfo {
+  width: 100%;
+  padding: 4px;
+}
+span#statusTime {
+  position: absolute;
+  right: 10px;
+  text-align: right;
+}
+span#statusError {
+  position: absolute;
+  left: 10px;
+  text-align: left;
+  display: none;
+  color: #f0f0f0;
+  background-color: rgba(255, 0, 0, 0.63);
+}
+dialog#favDialog {
+  width: 400px;
+  height: 200px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: auto;
+  margin-bottom: auto;
+  padding: 30px;
+}
+</style>
+<script src="bundle.js" defer="true"></script>
+</head>
+<body>
+<script type="module" defer="true">
+import init, { compressGzip, decompressGzip } from "./wasm_gzip.js"
+
+function fileName (path) {
+  return path.slice(path.lastIndexOf('/') + 1)
+}
+
+function formatSize (value) {
+  if (value > (1024 * 1024)) return `${Math.floor(value / (1024 * 1024))}M`
+  if (value > 1024) return `${Math.floor(value / 1024)}K`
+  return Math.floor(value)
+}
+
+async function main () {
+  function displayWal (wal) {
+    const { pageSize, checkpointSequence, counter, mxFrame, nPage, backfill, backfillAttempt, stats } = wal
+    const dbSize = nPage * pageSize
+    document.getElementById('walInfo').innerHTML = `
+<table class="walInfo">
+<tr>
+<td class="header">pageSize</td><td align="right">${pageSize}</td>
+</tr>
+<tr>
+<td class="header">checkpointSequence</td><td align="right">${checkpointSequence}</td>
+</tr>
+<tr>
+<td class="header">txn counter</td><td align="right">${counter}</td>
+</tr>
+<tr>
+<td class="header">frames</td><td align="right">${mxFrame}</td>
+</tr>
+<tr>
+<td class="header">wal size</td><td align="right">${mxFrame * pageSize}</td>
+</tr>
+<tr>
+<td class="header">db pages</td><td align="right">${nPage}</td>
+</tr>
+<tr>
+<td class="header">db size</td><td align="right">${formatSize(dbSize)}</td>
+</tr>
+<tr>
+<td class="header">backfill</td><td align="right">${backfill}</td>
+</tr>
+<tr>
+<td class="header">backfillAttempt</td><td align="right">${backfillAttempt}</td>
+</tr>
+<tr>
+<td class="header">recv</td><td align="right">${stats.recv}</td>
+</tr>
+</table>
+    `
+  }
+
+  function showError (message) {
+    const status = document.getElementById('statusError')
+    status.innerText = message
+    status.style.display = 'block'
+  }
+
+  class Database {
+    constructor () {
+      this.worker = new Worker('worker.js')
+      this.queue = []
+      this.worker.onmessage = e => {
+        if (e.data.errorMessage) {
+          showError(e.data.errorMessage)
+          return
+        }
+        this.queue.shift()(e.data)
+      }
+      this.worker.onerror = err => {
+        console.error(err.stack)
+      }
+    }
+    open (fileName) {
+      const p = new Promise(resolve => this.queue.push(resolve))
+      this.worker.postMessage({ open: fileName })
+      this.fileName = fileName
+      return p
+    }
+    exec (sql) {
+      const p = new Promise(resolve => this.queue.push(resolve))
+      this.worker.postMessage({ sql, db: this.fileName })
+      return p
+    }
+    checkpoint (name = 'main', wal) {
+      const p = new Promise(resolve => this.queue.push(resolve))
+      this.worker.postMessage({ checkpoint: true, db: this.fileName, name, wal })
+      return p
+    }
+    serialize (name = 'main') {
+      const p = new Promise(resolve => this.queue.push(resolve))
+      this.worker.postMessage({ name, serialize: true, db: this.fileName })
+      return p
+    }
+    status () {
+      const p = new Promise(resolve => this.queue.push(resolve))
+      this.worker.postMessage({ status: true, db: this.fileName })
+      return p
+    }
+  }
+
+  class GistClient {
+    constructor (name = '', username = '', token = '', id = '', description = '') {
+      this.name = name
+      this.username = username
+      this.id = id
+      this.token = token
+      this.description = description
+    }
+
+    pull (version) {
+      const fileName = `${this.name}-wal.${version}.gz.b64`
+      const { username } = this
+      console.log(username)
+      return fetch(`https://gist.githubusercontent.com/${username}/${this.id}/raw/${fileName}`, { method: 'HEAD' })
+        .then(res => {
+          if (!res.ok) return
+          return fetch(`https://gist.githubusercontent.com/${username}/${this.id}/raw/${fileName}`)
+            .then(res => {
+              if (!res.ok) throw new Error('Bad Status')
+              return res.text()
+            })
+            .then(text => base64Decode(text))
+        })
+        .catch(err => {
+          console.error(err.message)
+        })
+    }
+
+    create (db) {
+      return fetch(`https://api.github.com/gists`, {
+          method: 'POST',
+          body: JSON.stringify({
+            description: `${this.name}: ${this.description}`, 
+            files: {
+              [`${this.name}`]: {
+                content: base64Encode(db)
+              }
+            }
+          }),
+          headers: {
+            'Authorization': `token ${token}`
+          }
+        })
+        .then(res => {
+          if (!res.ok) throw new Error('Bad Status')
+          return res.json()
+        })
+    }
+
+    push (version, patch) {
+      const fileName = `${this.name}-wal.${version}.gz.b64`
+      const { username, token } = this
+      return fetch(`https://gist.githubusercontent.com/${username}/${this.id}/raw/${fileName}`, { method: 'HEAD' })
+        .then(res => {
+          if (res.ok) {
+            throw new Error('Revision Already Exists')
+            // this revision already exists - oh no!!!
+            return
+          }
+          return fetch(`https://api.github.com/gists/${this.id}`, {
+              method: 'PATCH',
+              body: JSON.stringify({
+                description: `pushing wal version ${version} to database ${this.name} for ${username}`, 
+                files: {
+                  [fileName]: {
+                    content: base64Encode(patch)
+                  }
+                }
+              }),
+              headers: {
+                'Authorization': `token ${token}`
+              }
+            })
+            .then(res => {
+              if (!res.ok) throw new Error('Bad Status')
+              return res.json()
+            })
+        })
+        .catch(err => {
+          console.error(err.message)
+        })
+    }
+  }
+
+  function base64Encode(byteArray) {
+    let binaryString = ''
+    for (let i = 0; i < byteArray.byteLength; i++) {
+      binaryString += String.fromCharCode(byteArray[i])
+    }
+    return btoa(binaryString)
+  }
+
+  function base64Decode(base64) {
+    const binary_string = window.atob(base64)
+    const len = binary_string.length
+    const bytes = new Uint8Array(len)
+    for (let i = 0; i < len; i++) {
+        bytes[i] = binary_string.charCodeAt(i)
+    }
+    return bytes
+  }
+
+  async function runQuery () {
+    document.getElementById('statusError').style.display = 'none'
+    const results = document.getElementById('results')
+    results.innerText = ''
+    const sql = editor.getSelectedText() || editor.getValue()
+    const { rows, time } = await db.exec(sql)
+    results.innerText = JSON.stringify(rows, null, '  ')
+    status.innerText = `${rows.length} rows in ${time} ms`
+  }
+
+  async function onKeyDown (event) {
+    if (event.key === 'e' && event.ctrlKey) {
+      event.preventDefault()
+      await runQuery()
+      return
+    }
+    if (event.key === 'h' && event.ctrlKey) {
+      event.preventDefault()
+      const { logSize, framesCheckpointed, checkpoint, checkpointSequence } = await db.checkpoint()
+      displayWal(checkpoint.wal)
+      console.log(`checkpoint logSize ${logSize} frames ${framesCheckpointed}, checkpointSequence, ${checkpointSequence}`)
+      const compressed = compressGzip(new Uint8Array(checkpoint.wal.delta))
+      console.log(`before ${checkpoint.wal.delta.byteLength} after ${compressed.length}`)
+      const { rows } = await db.exec('pragma user_version')
+      const { user_version } = rows[0]
+      if (checkpointSequence >= db.checkpointSequence) {
+        await db.gist.push(user_version + 1, compressed)
+        await db.exec(`pragma user_version = ${user_version + 1}`)
+        db.checkpointSequence = checkpointSequence
+      }
+      return
+    }
+    if (event.key === 's' && event.ctrlKey) {
+      event.preventDefault()
+      const result = await db.serialize()
+      const link = document.createElement('a')
+      const blob = new Blob([result.db], { type: 'application.octet-stream' } )
+      const objectURL = URL.createObjectURL(blob)
+      link.href = objectURL
+      link.href = URL.createObjectURL(blob)
+      link.download = fileName(dbName)
+      link.click()
+      return
+    }
+    if (event.key === 'i' && event.ctrlKey) {
+      event.preventDefault()
+      const result = await db.status()
+      const main = result.find(v => v.name === 'main')
+      if (main) displayWal(main)
+      return
+    }
+    if (event.key === 'j' && event.ctrlKey) {
+      event.preventDefault()
+      const { checkpoint } = await db.checkpoint()
+      const compressed = compressGzip(new Uint8Array(checkpoint.wal.delta))
+      const link = document.createElement('a')
+      const blob = new Blob([compressed], { type: 'application.octet-stream' } )
+      const objectURL = URL.createObjectURL(blob)
+      link.href = objectURL
+      link.href = URL.createObjectURL(blob)
+      link.download = `${fileName(dbName)}-wal.gz`
+      link.click()
+      return
+    }
+  }
+
+  function onFileSelect (event) {
+    const fileList = event.target.files
+    const reader = new FileReader()
+    reader.addEventListener('load', async (event) => {
+      let buf = event.target.result
+      if (file.name.indexOf('.gz') > -1) {
+        const decompressed = decompressGzip(new Uint8Array(buf))
+        buf = decompressed.buffer
+      }
+      const result = await db.checkpoint('main', buf)
+      const { rc, logSize, framesCheckpointed } = result
+      console.log(`checkpoint ${rc} logSize ${logSize} frames ${framesCheckpointed}`)
+    })
+    const file = fileList[0]
+    reader.readAsArrayBuffer(file)
+    fileSelector.value = null
+  }
+
+  let dbName
+  const gistRx = /https:\/\/gist.githubusercontent.com\/(.+)\/(.+)\/raw\/(.+).db/
+  const url = new URL(window.location.href)
+  const db = new Database()
+  if (url.hash) {
+    dbName = url.hash.slice(1)
+    const match = gistRx.exec(dbName)
+    if ((match && match.length > 3)) {
+      const [ username, id, name ] = match.slice(1)
+      console.log(`opening gist database ${username}.${name} id ${id}`)
+      db.gist = new GistClient(name, username, '', id)
+    }
+  } else {
+    window.location.hash = '#blank.db'
+    window.location.reload()
+  }
+  await db.open(dbName)
+  db.checkpointSequence = 0
+  async function pull () {
+    if (!db.gist) return showError('No Database Open')
+    const { rows } = await db.exec('pragma user_version')
+    const { user_version } = rows[0]
+    console.log(`polling ${user_version} for ${user_version + 1}`)
+    const patch = await db.gist.pull(user_version + 1)
+    if (patch) {
+      console.log('patch found')
+      const buf = decompressGzip(patch).buffer
+      const result = await db.checkpoint('main', buf)
+      const { rc, logSize, framesCheckpointed } = result
+      console.log(`checkpoint ${rc} logSize ${logSize} frames ${framesCheckpointed}`)
+      await db.exec(`pragma user_version = ${user_version + 1}`)
+      const status = await db.status()
+      const main = status.find(v => v.name === 'main')
+      if (main) displayWal(main)
+    }
+  }
+
+  async function push () {
+    console.log(`token ${db.gist.token}`)
+    if (!(db.gist && db.gist.token)) {
+      console.log(`dbName ${dbName}`)
+      const match = gistRx.exec(dbName)
+      if (!db.gist) db.gist = new GistClient(name)
+      if (!db.gist.token) {
+        document.getElementById('favDialog').showModal()
+        const username = document.getElementById('txtUserName').value
+        const token = document.getElementById('txtAPIToken').value
+        if (!username || !token) return showError('Not a gist database')
+        db.gist.username = username
+        db.gist.token = token
+      } else {
+        const [ username, id, name ] = match.slice(1)
+        console.log(`opening gist database ${username}.${name} id ${id}`)
+        db.gist = new GistClient(name, id, username)
+      }
+    }
+    // can we grab the wal before checkpointing to ensure we can store it first? i think so...
+    const { logSize, framesCheckpointed, checkpoint, checkpointSequence } = await db.checkpoint()
+    displayWal(checkpoint.wal)
+    console.log(`checkpoint logSize ${logSize} frames ${framesCheckpointed}, checkpointSequence, ${checkpointSequence}`)
+    const compressed = compressGzip(new Uint8Array(checkpoint.wal.delta))
+    const { rows } = await db.exec('pragma user_version')
+    const { user_version } = rows[0]
+    await db.gist.push(user_version + 1, compressed)
+    await db.exec(`pragma user_version = ${user_version + 1}`)
+    db.checkpointSequence = checkpointSequence
+  }
+
+  document.getElementById('btnPull').onclick = () => {
+    pull().then(() => {}).catch(err => console.error(err.stack))
+  }
+
+  document.getElementById('btnPush').onclick = () => {
+    push().then(() => {}).catch(err => console.error(err.stack))
+  }
+ 
+  const editor = window.ace.edit('editor')
+  editor.setTheme('ace/theme/monokai')
+  editor.session.setMode('ace/mode/sql')
+  editor.setValue("pragma table_list")
+  editor.setOptions({
+    fontFamily: 'monospace',
+    fontSize: '10pt',
+    tabSize: 2,
+    useSoftTabs: true
+  })
+  window.editor = editor
+  const fileSelector = document.getElementById('file-selector')
+  const status = document.getElementById('statusTime')
+  fileSelector.addEventListener('change', onFileSelect)
+  document.body.addEventListener('keydown', onKeyDown)
+  document.getElementById('editor').style.display = 'block'
+  delete editor.commands.commandKeyBinding['ctrl-e']
+  delete editor.commands.commandKeyBinding['ctrl-i']
+  delete editor.commands.commandKeyBinding['ctrl-j']
+  delete editor.commands.commandKeyBinding['ctrl-h']
+  delete editor.commands.commandKeyBinding['ctrl-s']
+  document.getElementsByTagName("html")[0].style.visibility = 'visible'
+  init()
+  runQuery()
+}
+window.onload = () => main().catch(err => console.error(err.stack))
+</script>
+<div id="sql">
+<div id="editor"></div>
+</div>
+<div id="status">
+<span id="statusError"></span>
+<span id="statusTime"></span>
+</div>
+<pre id="results"></pre>
+<div id="wal">
+<h2 class="logo">QuiLlS</h2>
+<h3 class="sub">a WASM SQLite adventure...</h3>
+<div id="walInfo"></div>
+<input type="file" id="file-selector">
+<button id="btnPull">pull</button>
+<button id="btnPush">push</button>
+</div>
+
+<dialog id="favDialog">
+  <form method="dialog">
+    <section>
+      <p><label for="txtUserName">Github Username</label>
+      <input type="text" id="txtUsername" name="txtUsername" />
+      </p>
+      <p><label for="txtAPIToken">Gist API Token</label>
+      <input type="password" id="txtAPIToken" name="txtAPIToken" />
+      </p>
+      <p><label for="txtName">Database Name</label>
+      <input type="text" id="txtName" name="txtName" />
+      </p>
+      <p><label for="txtDescription">Database Description</label>
+      <input type="text" id="txtDescription" name="txtDescription" />
+      </p>
+    </section>
+    <menu>
+      <button onclick="favDialog.close()" type="reset">Cancel</button>
+      <button type="submit">Confirm</button>
+    </menu>    
+  </form>
+</dialog>
+
+</body>
+</html>
