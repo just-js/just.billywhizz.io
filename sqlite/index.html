@@ -99,15 +99,6 @@ span#statusError {
   color: #f0f0f0;
   background-color: rgba(255, 0, 0, 0.63);
 }
-dialog#favDialog {
-  width: 400px;
-  height: 200px;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: auto;
-  margin-bottom: auto;
-  padding: 30px;
-}
 </style>
 <script src="bundle.js" defer="true"></script>
 </head>
@@ -215,18 +206,12 @@ async function main () {
   }
 
   class WalClient {
-    constructor (name = '', username = '', token = '', id = '', description = '') {
+    constructor (name = '') {
       this.name = name
-      this.username = username
-      this.id = id
-      this.token = token
-      this.description = description
     }
 
     pull (version) {
       const fileName = `${this.name}-wal.${version}.gz.b64`
-      const { username } = this
-      console.log(username)
       return fetch(fileName, { method: 'HEAD' })
         .then(res => {
           if (!res.ok) return
@@ -272,12 +257,12 @@ async function main () {
   }
 
   async function onKeyDown (event) {
-    if (event.key === 'e' && event.ctrlKey) {
+    if (event.key === 'e' && (event.ctrlKey || event.metaKey)) {
       event.preventDefault()
       await runQuery()
       return
     }
-    if (event.key === 'h' && event.ctrlKey) {
+    if (event.key === 'h' && (event.ctrlKey || event.metaKey)) {
       event.preventDefault()
       const { logSize, framesCheckpointed, checkpoint, checkpointSequence } = await db.checkpoint()
       displayWal(checkpoint.wal)
@@ -293,7 +278,7 @@ async function main () {
       }
       return
     }
-    if (event.key === 's' && event.ctrlKey) {
+    if (event.key === 's' && (event.ctrlKey || event.metaKey)) {
       event.preventDefault()
       const result = await db.serialize()
       const link = document.createElement('a')
@@ -305,14 +290,14 @@ async function main () {
       link.click()
       return
     }
-    if (event.key === 'i' && event.ctrlKey) {
+    if (event.key === 'i' && (event.ctrlKey || event.metaKey)) {
       event.preventDefault()
       const result = await db.status()
       const main = result.find(v => v.name === 'main')
       if (main) displayWal(main)
       return
     }
-    if (event.key === 'j' && event.ctrlKey) {
+    if (event.key === 'j' && (event.ctrlKey || event.metaKey)) {
       event.preventDefault()
       const { checkpoint } = await db.checkpoint()
       const compressed = compressGzip(new Uint8Array(checkpoint.wal.delta))
@@ -380,10 +365,14 @@ async function main () {
     pull().then(() => {}).catch(err => console.error(err.stack))
   }
 
+  document.getElementById('btnQuery').onclick = () => {
+    runQuery().then(() => {}).catch(err => console.error(err.stack))
+  }
+
   const editor = window.ace.edit('editor')
   editor.setTheme('ace/theme/monokai')
   editor.session.setMode('ace/mode/sql')
-  editor.setValue("pragma table_list")
+  editor.setValue("select * from artists")
   editor.setOptions({
     fontFamily: 'monospace',
     fontSize: '10pt',
@@ -420,31 +409,8 @@ window.onload = () => main().catch(err => console.error(err.stack))
 <h3 class="sub">a WASM SQLite adventure...</h3>
 <div id="walInfo"></div>
 <input type="file" id="file-selector">
+<button id="btnQuery">query</button>
 <button id="btnPull">pull</button>
 </div>
-
-<dialog id="favDialog">
-  <form method="dialog">
-    <section>
-      <p><label for="txtUserName">Github Username</label>
-      <input type="text" id="txtUsername" name="txtUsername" />
-      </p>
-      <p><label for="txtAPIToken">Gist API Token</label>
-      <input type="password" id="txtAPIToken" name="txtAPIToken" />
-      </p>
-      <p><label for="txtName">Database Name</label>
-      <input type="text" id="txtName" name="txtName" />
-      </p>
-      <p><label for="txtDescription">Database Description</label>
-      <input type="text" id="txtDescription" name="txtDescription" />
-      </p>
-    </section>
-    <menu>
-      <button onclick="favDialog.close()" type="reset">Cancel</button>
-      <button type="submit">Confirm</button>
-    </menu>    
-  </form>
-</dialog>
-
 </body>
 </html>
