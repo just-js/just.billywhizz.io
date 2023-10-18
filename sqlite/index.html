@@ -214,7 +214,7 @@ async function main () {
     }
   }
 
-  class GistClient {
+  class WalClient {
     constructor (name = '', username = '', token = '', id = '', description = '') {
       this.name = name
       this.username = username
@@ -227,70 +227,15 @@ async function main () {
       const fileName = `${this.name}-wal.${version}.gz.b64`
       const { username } = this
       console.log(username)
-      return fetch(`https://gist.githubusercontent.com/${username}/${this.id}/raw/${fileName}`, { method: 'HEAD' })
+      return fetch(fileName, { method: 'HEAD' })
         .then(res => {
           if (!res.ok) return
-          return fetch(`https://gist.githubusercontent.com/${username}/${this.id}/raw/${fileName}`)
+          return fetch(fileName)
             .then(res => {
               if (!res.ok) throw new Error('Bad Status')
               return res.text()
             })
             .then(text => base64Decode(text))
-        })
-        .catch(err => {
-          console.error(err.message)
-        })
-    }
-
-    create (db) {
-      return fetch(`https://api.github.com/gists`, {
-          method: 'POST',
-          body: JSON.stringify({
-            description: `${this.name}: ${this.description}`, 
-            files: {
-              [`${this.name}`]: {
-                content: base64Encode(db)
-              }
-            }
-          }),
-          headers: {
-            'Authorization': `token ${token}`
-          }
-        })
-        .then(res => {
-          if (!res.ok) throw new Error('Bad Status')
-          return res.json()
-        })
-    }
-
-    push (version, patch) {
-      const fileName = `${this.name}-wal.${version}.gz.b64`
-      const { username, token } = this
-      return fetch(`https://gist.githubusercontent.com/${username}/${this.id}/raw/${fileName}`, { method: 'HEAD' })
-        .then(res => {
-          if (res.ok) {
-            throw new Error('Revision Already Exists')
-            // this revision already exists - oh no!!!
-            return
-          }
-          return fetch(`https://api.github.com/gists/${this.id}`, {
-              method: 'PATCH',
-              body: JSON.stringify({
-                description: `pushing wal version ${version} to database ${this.name} for ${username}`, 
-                files: {
-                  [fileName]: {
-                    content: base64Encode(patch)
-                  }
-                }
-              }),
-              headers: {
-                'Authorization': `token ${token}`
-              }
-            })
-            .then(res => {
-              if (!res.ok) throw new Error('Bad Status')
-              return res.json()
-            })
         })
         .catch(err => {
           console.error(err.message)
@@ -401,17 +346,11 @@ async function main () {
   }
 
   let dbName
-  const gistRx = /https:\/\/gist.githubusercontent.com\/(.+)\/(.+)\/raw\/(.+).db/
   const url = new URL(window.location.href)
   const db = new Database()
   if (url.hash) {
     dbName = url.hash.slice(1)
-    const match = gistRx.exec(dbName)
-    if ((match && match.length > 3)) {
-      const [ username, id, name ] = match.slice(1)
-      console.log(`opening gist database ${username}.${name} id ${id}`)
-      db.gist = new GistClient(name, username, '', id)
-    }
+    db.gist = new WalClient(dbName)
   } else {
     window.location.hash = '#blank.db'
     window.location.reload()
@@ -437,45 +376,10 @@ async function main () {
     }
   }
 
-  async function push () {
-    console.log(`token ${db.gist.token}`)
-    if (!(db.gist && db.gist.token)) {
-      console.log(`dbName ${dbName}`)
-      const match = gistRx.exec(dbName)
-      if (!db.gist) db.gist = new GistClient(name)
-      if (!db.gist.token) {
-        document.getElementById('favDialog').showModal()
-        const username = document.getElementById('txtUserName').value
-        const token = document.getElementById('txtAPIToken').value
-        if (!username || !token) return showError('Not a gist database')
-        db.gist.username = username
-        db.gist.token = token
-      } else {
-        const [ username, id, name ] = match.slice(1)
-        console.log(`opening gist database ${username}.${name} id ${id}`)
-        db.gist = new GistClient(name, id, username)
-      }
-    }
-    // can we grab the wal before checkpointing to ensure we can store it first? i think so...
-    const { logSize, framesCheckpointed, checkpoint, checkpointSequence } = await db.checkpoint()
-    displayWal(checkpoint.wal)
-    console.log(`checkpoint logSize ${logSize} frames ${framesCheckpointed}, checkpointSequence, ${checkpointSequence}`)
-    const compressed = compressGzip(new Uint8Array(checkpoint.wal.delta))
-    const { rows } = await db.exec('pragma user_version')
-    const { user_version } = rows[0]
-    await db.gist.push(user_version + 1, compressed)
-    await db.exec(`pragma user_version = ${user_version + 1}`)
-    db.checkpointSequence = checkpointSequence
-  }
-
   document.getElementById('btnPull').onclick = () => {
     pull().then(() => {}).catch(err => console.error(err.stack))
   }
 
-  document.getElementById('btnPush').onclick = () => {
-    push().then(() => {}).catch(err => console.error(err.stack))
-  }
- 
   const editor = window.ace.edit('editor')
   editor.setTheme('ace/theme/monokai')
   editor.session.setMode('ace/mode/sql')
@@ -517,7 +421,6 @@ window.onload = () => main().catch(err => console.error(err.stack))
 <div id="walInfo"></div>
 <input type="file" id="file-selector">
 <button id="btnPull">pull</button>
-<button id="btnPush">push</button>
 </div>
 
 <dialog id="favDialog">
