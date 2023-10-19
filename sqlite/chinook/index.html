@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge'>
+<title>WebLog</title>
+<link rel="icon" type="image/png" href="data:image/png;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAA4f8AAAAAAP+EAAAAAP8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAERERERERERERESIiIiIREREREiIiIRERERERMzMRERESERMwAzERIRIhEzADMRIhEiEzAzAzEiESIzMzMzMyIRIjMzMzMzIhEiMzMzMzMiESIzADMAMyIRITMAMwAzEhERMzMzMzMRERERIiIiERERERIiIiIhERERERERERERH//wAA8A8AAPgfAAD8PwAAuB0AAJgZAACQCQAAgAEAAIABAACAAQAAgAEAAKAFAADgBwAA+B8AAPAPAAD//wAA" />
+<meta name='viewport' content='width=device-width, initial-scale=1'>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    font-family: monospace;
+}
+body {
+  background-color: #f0f0f0;
+  margin-left: auto;
+  margin-right: auto;
+}
+h2.logo {
+  text-align: center;
+  background-color: #a6cea3;
+  padding-top: 4px;
+  color: #313f30;
+  font-size: 24pt;
+  padding-right: 10px;
+  padding-left: 10px;
+}
+div.artist {
+  font-size: 18pt;
+  background-color: white;
+  text-align: center;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+div.artist a {
+  text-decoration: none;
+}
+div.artist:hover {
+  background-color: #a6cea3;
+}
+div.album {
+  font-size: 18pt;
+  background-color: white;
+  text-align: center;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+div.album a {
+  text-decoration: none;
+}
+div.album:hover {
+  background-color: #a6cea3;
+}
+div.track {
+  font-size: 18pt;
+  background-color: white;
+  text-align: center;
+  margin-top: 4px;
+  margin-bottom: 4px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+div.track a {
+  text-decoration: none;
+}
+div.track:hover {
+  background-color: #a6cea3;
+}
+button.big {
+  width: 100%;
+  height: 40px;
+  background-color: #a6cea3;
+  font-weight: bold;
+  font-size: 18pt;
+  cursor: pointer;
+  color: green;
+  position: relative;
+  left: 0px;
+  right: 0px;
+}
+div.control {
+  position: relative;
+  bottom: 0px;
+}
+div.center {
+  width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  bottom: 0px;
+  top: 0px;
+  position: relative;
+}
+div#divArtists {
+  display: block;
+}
+div#divArtist {
+  display: none;
+}
+div#divAlbum {
+  display: none;
+}
+</style>
+</head>
+<body>
+<div class="center">
+<div id="divArtists"></div>
+<div id="divArtist"></div>
+<div id="divAlbum"></div>
+</div>
+</body>
+</html>
+<script type="module">
+import { Database, compile } from './quills.js'
+
+const panels = { divArtist, divArtists, divAlbum }
+function show (name) {
+  Object.keys(panels).forEach(k => {
+    panels[k].style.display = (k === `div${name}`) ? 'block' : 'none'
+  })
+}
+
+class API {
+  #db
+  #status = 'closed'
+  #name = ''
+
+  constructor (dbName) {
+    this.#name = dbName
+    this.#db = new Database()
+  }
+
+  get name () {
+    return this.#db.name
+  }
+
+  async #getdb () {
+    if (this.#status === 'open') return this.#db
+    await this.#db.open(this.#name)
+    this.#status = 'open'
+    return this.#db
+  }
+
+  async version () {
+    const db = await this.#getdb()
+    return (await db.exec('pragma user_version')).rows[0].user_version
+  }
+
+  async getAlbums (artistId) {
+    const db = await this.#getdb()
+    return (await db.exec(`select AlbumId as id, Title as title from albums where artistid = ${artistId}`)).rows
+  }
+
+  async getTracks (albumId) {
+    const db = await this.#getdb()
+    return (await db.exec(`select TrackId as id, Name as title, GenreId as genre, MediaTypeId as media, Composer as compose, Milliseconds as duration, Bytes as size, UnitPrice as price from tracks where AlbumId = ${albumId}`)).rows
+  }
+
+  async getArtists (offset = 0, count = 20) {
+    const db = await this.#getdb()
+    return (await db.exec(`select ArtistId as id, substr(Name, 0, 20) as name from artists order by name asc limit ${offset},${count}`)).rows
+  }
+}
+
+async function main () {
+  const name = 'chinook.db'
+  const dbPath = `/sqlite/demo/db/${name}`
+  const api = new API(dbPath)
+  const version = await api.version()
+  let count = 20
+  let offset = 0
+  async function displayAlbum (id) {
+    const tracks = await api.getTracks(id)
+    divAlbum.innerHTML = [renderHeader.call(), renderAlbum.call(tracks)].join('')
+    show('Album')
+  }
+  async function displayArtist (id) {
+    const albums = await api.getAlbums(id)
+    divArtist.innerHTML = [renderHeader.call(), renderArtist.call(albums)].join('')
+    show('Artist')
+  }
+  async function displayArtists () {
+    let artists = await api.getArtists(offset, count)
+    if (!artists.length) {
+      offset = 0
+      artists = await api.getArtists(offset, count)
+    }
+    divArtists.innerHTML = [renderHeader.call(), renderArtists.call(artists)].join('')
+    offset += count
+    show('Artists')
+  }
+  const renderHeader = compile(`
+<h2 class="logo">${name} (${version})</h2>
+<h3></h3>
+  `, '', { rawStrings: true })
+  const renderArtists = compile(`
+{{#each this}}
+<div class="artist"><a onclick="displayArtist({{id}})" href="#">{{name}}</a></div>
+{{/each}}
+<div class="control">
+<button class="big" onclick="displayArtists()">Next</button>
+</div>
+`, '', { rawStrings: true })
+  const renderArtist = compile(`
+{{#each this}}
+<div class="album"><a onclick="displayAlbum({{id}})" href="#">{{title}}</a></div>
+{{/each}}
+<div class="control">
+<button class="big" onclick="show('Artists')">Back</button>
+</div>
+`, '', { rawStrings: true })
+  const renderAlbum = compile(`
+{{#each this}}
+<div class="track"><a onclick="purchaseTrack({{id}})" href="#">{{title}}</a></div>
+{{/each}}
+<div class="control">
+<button class="big" onclick="show('Artists')">Back</button>
+</div>
+`, '', { rawStrings: true })
+  window.displayArtists = displayArtists
+  window.displayArtist = displayArtist
+  window.displayAlbum = displayAlbum
+  window.show = show
+  await displayArtists()
+}
+
+window.onload = () => main().catch(err => console.error(err.stack))
+</script>
