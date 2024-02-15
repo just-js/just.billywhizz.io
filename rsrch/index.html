@@ -1,0 +1,105 @@
+<style>
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  color: rgb(248, 248, 242);
+  background-color: #f0f0f0;
+  font-family: monospace;
+  font-size: 12px; 
+  line-height: 16px; 
+  white-space: pre;
+  margin: 8px;
+  padding: 8px;
+}
+
+div#editor {
+  position: absolute;
+  background-color: rgb(39, 40, 34);
+  left: 10px;
+  right: 50%;
+  top: 10px;
+  bottom: 10px;
+  padding: 8px;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+  overflow: auto; /* Hide scrollbars */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+div#editor::-webkit-scrollbar {
+  display: none;
+}
+
+
+</style>
+<script type="text/javascript">
+
+const decoder = new TextDecoder()
+
+async function paste_into (target) {
+  const item = await navigator.clipboard.read()
+  const mime_type = item[0].types[0]
+  const [type, format] = mime_type.split('/')
+  if (type === 'text') {
+    const blob = await item[0].getType(mime_type)
+    const p = document.createElement('p')
+    const buf = await blob.arrayBuffer()
+    const text = await decoder.decode(new Uint8Array(buf))
+    p.innerText = text
+    target.appendChild(p)
+  } else if (type === 'image') {
+    const blob = await item[0].getType(mime_type)
+    const img = document.createElement('img')
+    const obj_url = URL.createObjectURL(blob)
+    img.src = obj_url
+    target.appendChild(img)
+  }
+}
+
+document.addEventListener('copy', event => {
+  console.log('copy')
+})
+
+document.addEventListener('paste', event => {
+//  event.preventDefault()
+  paste_into(event.target)
+})
+
+function on_key_down (event) {
+  if (event.key === 's' && (event.ctrlKey || event.metaKey)) {
+    event.preventDefault()
+    save_document()
+    return
+  }
+  if (event.key === 'i' && (event.ctrlKey || event.metaKey)) {
+    event.preventDefault()
+    Array.from(document.getElementsByTagName('img')).forEach(img => img.width = 700)
+    return
+  }
+
+}
+
+function init () {
+  document.body.addEventListener('keydown', on_key_down)
+  load_document()
+}
+
+function load_document () {
+  document.body.children[0].innerHTML = localStorage.getItem('editor_document')
+}
+
+function save_document () {
+  localStorage.setItem('editor_document', document.body.children[0].innerHTML)
+}
+
+</script>
+
+<body onload="init()">
+<div id="editor" contenteditable="true">
+
+</div>
+</body>
