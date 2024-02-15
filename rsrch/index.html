@@ -75,7 +75,7 @@ function on_key_down (event) {
     save_document()
     return
   }
-  if (event.key === 'f' && (event.ctrlKey || event.metaKey)) {
+  if (event.key === 'i' && (event.ctrlKey || event.metaKey)) {
     event.preventDefault()
     Array.from(document.getElementsByTagName('img')).forEach(img => img.width = 700)
     Array.from(document.getElementsByTagName('table')).forEach(tbl => tbl.style.width = '700px')
