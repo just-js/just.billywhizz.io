@@ -2,7 +2,7 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 <channel>
 <link>https://just.billywhizz.io/blog/</link>
-<atom:link href="https://just.billywhizz.io/blog//blog/index.xml" rel="self" type="application/rss+xml" />
+<atom:link href="https://just.billywhizz.io/blog/index.xml" rel="self" type="application/rss+xml" />
 <title>just.js</title>
 <description>Weblog of just.js Javascript framework</description>
 
