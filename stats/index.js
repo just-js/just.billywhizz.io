@@ -265,7 +265,7 @@ select * from summary where mins >= 1000
         }
       })
   } else {
-    db.open('blank.db', { wasm: 'sqlite.wasm', prefetch: true })
+    db.open('summary.db', { wasm: 'sqlite.wasm', prefetch: true })
       .then(() => {
         const b64 = localStorage.getItem('plstatzdb')
         if (b64) {
