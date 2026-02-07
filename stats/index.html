@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>SQwL</title>
+<meta charset='utf-8'>
+<meta http-equiv='X-UA-Compatible' content='IE=edge'>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#317EFB"/>
+<link rel="apple-touch-icon" sizes="512x512" href="/icon512.png">
+<link rel="icon" type="image/png" href="data:image/png;base64,AAABAAEAEBAQAAEABAAoAQAAFgAAACgAAAAQAAAAIAAAAAEABAAAAAAAgAAAAAAAAAAAAAAAEAAAAAAAAAAA4f8AAAAAAP+EAAAAAP8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAERERERERERERESIiIiIREREREiIiIRERERERMzMRERESERMwAzERIRIhEzADMRIhEiEzAzAzEiESIzMzMzMyIRIjMzMzMzIhEiMzMzMzMiESIzADMAMyIRITMAMwAzEhERMzMzMzMRERERIiIiERERERIiIiIhERERERERERERH//wAA8A8AAPgfAAD8PwAAuB0AAJgZAACQCQAAgAEAAIABAACAAQAAgAEAAKAFAADgBwAA+B8AAPAPAAD//wAA" />
+<style>
+body {
+  background-color: #272822;
+  overflow: hidden;
+  font-size: 8pt;
+}
+body .ace_scrollbar {
+  display: none;
+}
+div#sql { 
+  overflow: none;
+  position: absolute;
+  top: 0px;
+  right: 0;
+  left: 0px;
+  bottom: 1px;
+  display: none;
+  width: 600px;
+}
+div#results { 
+  overflow: none;
+  background-color: #6765e2;
+  background-color: #f0f0f0;
+  position: absolute;
+  top: 0px;
+  right: 0;
+  bottom: 1px;
+  left: 0px;
+  display: block;
+  overflow: auto;
+}
+table {
+  margin: 0px;
+  padding: 0px;
+  margin-left: auto;
+  margin-right: auto;
+  border-spacing: 0px;
+  font-family: monospace;
+}
+th {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0px;
+  z-index: 10;
+  background-color: #007ACC;
+  font-weight: normal;
+  color: white;
+  height: 28px;
+  padding: 0px;
+  padding-left: 6px;
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+tr {
+  background-color: white;
+}
+td {
+  padding: 0px;
+  overflow: hidden;
+  white-space: nowrap;
+  border-bottom: 1px solid #f0f0f0;
+  border-left: 1px solid #f0f0f0;
+}
+td div {
+  padding-right: 2px;
+}
+</style>
+<script type="module" src="index.js"></script>
+</head>
+<body>
+<div id="results"></div>
+<div id="sql"></div>
+<div id="error"></div>
+</body>
+<script src="ace.js" type="text/javascript" defer async></script>
+</html>
